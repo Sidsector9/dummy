@@ -119,6 +119,8 @@ add_action( 'widgets_init', 'thekeynote_widgets_init' );
 function thekeynote_scripts() {
 	wp_enqueue_style( 'thekeynote-style', get_stylesheet_uri() );
 
+	wp_enqueue_style( 'thekeynote-foundation-style', get_template_directory_uri() . '/scss/foundation-6/css/foundation.min.css', array(), false, 'all' );
+
 	wp_enqueue_script( 'thekeynote-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
 
 	wp_enqueue_script( 'thekeynote-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
