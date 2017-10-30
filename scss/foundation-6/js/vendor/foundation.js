@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -77,9 +77,9 @@ module.exports = jQuery;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return rtl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return rtl; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GetYoDigits; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return transitionend; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return transitionend; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 
@@ -387,7 +387,7 @@ function parseStyleToObject(str) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Triggers; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__foundation_util_motion__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__foundation_util_motion__ = __webpack_require__(5);
 
 
 
@@ -442,7 +442,7 @@ Triggers.Listeners.Basic = {
     var animation = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this).data('closable');
 
     if (animation !== '') {
-      __WEBPACK_IMPORTED_MODULE_1__foundation_util_motion__["a" /* Motion */].animateOut(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(this), animation, function () {
+      __WEBPACK_IMPORTED_MODULE_1__foundation_util_motion__["b" /* Motion */].animateOut(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(this), animation, function () {
         __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this).trigger('closed.zf');
       });
     } else {
@@ -663,8 +663,89 @@ Triggers.init = function ($, Foundation) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export Move */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Motion; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Plugin; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__foundation_util_core__ = __webpack_require__(1);
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+// Abstract class for providing lifecycle hooks. Expect plugins to define AT LEAST
+// {function} _setup (replaces previous constructor),
+// {function} _destroy (replaces previous destroy)
+
+var Plugin = function () {
+  function Plugin(element, options) {
+    _classCallCheck(this, Plugin);
+
+    this._setup(element, options);
+    var pluginName = getPluginName(this);
+    this.uuid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__foundation_util_core__["a" /* GetYoDigits */])(6, pluginName);
+
+    if (!this.$element.attr('data-' + pluginName)) {
+      this.$element.attr('data-' + pluginName, this.uuid);
+    }
+    if (!this.$element.data('zfPlugin')) {
+      this.$element.data('zfPlugin', this);
+    }
+    /**
+     * Fires when the plugin has initialized.
+     * @event Plugin#init
+     */
+    this.$element.trigger('init.zf.' + pluginName);
+  }
+
+  _createClass(Plugin, [{
+    key: 'destroy',
+    value: function destroy() {
+      this._destroy();
+      var pluginName = getPluginName(this);
+      this.$element.removeAttr('data-' + pluginName).removeData('zfPlugin')
+      /**
+       * Fires when the plugin has been destroyed.
+       * @event Plugin#destroyed
+       */
+      .trigger('destroyed.zf.' + pluginName);
+      for (var prop in this) {
+        this[prop] = null; //clean up script to prep for garbage collection.
+      }
+    }
+  }]);
+
+  return Plugin;
+}();
+
+// Convert PascalCase to kebab-case
+// Thank you: http://stackoverflow.com/a/8955580
+
+
+function hyphenate(str) {
+  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
+function getPluginName(obj) {
+  if (typeof obj.constructor.name !== 'undefined') {
+    return hyphenate(obj.constructor.name);
+  } else {
+    return hyphenate(obj.className);
+  }
+}
+
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Move; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Motion; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__foundation_util_core__ = __webpack_require__(1);
@@ -753,7 +834,7 @@ function animate(isIn, element, animation, cb) {
   });
 
   // Clean up the animation when it finishes
-  element.one(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__foundation_util_core__["b" /* transitionend */])(element), finish);
+  element.one(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__foundation_util_core__["c" /* transitionend */])(element), finish);
 
   // Hides the element (for out animations), resets the element, and runs a callback
   function finish() {
@@ -772,7 +853,7 @@ function animate(isIn, element, animation, cb) {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1129,18 +1210,19 @@ function hyphenate(str) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Reveal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Slider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__foundation_util_keyboard__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__foundation_util_mediaQuery__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__foundation_util_motion__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__foundation_plugin__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__foundation_util_triggers__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__foundation_util_keyboard__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__foundation_util_motion__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__foundation_util_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__foundation_plugin__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__foundation_util_touch__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__foundation_util_triggers__ = __webpack_require__(3);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1158,50 +1240,856 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
+
+
 /**
- * Reveal module.
- * @module foundation.reveal
- * @requires foundation.util.keyboard
+ * Slider module.
+ * @module foundation.slider
+ * @requires foundation.util.motion
  * @requires foundation.util.triggers
- * @requires foundation.util.mediaQuery
- * @requires foundation.util.motion if using animations
+ * @requires foundation.util.keyboard
+ * @requires foundation.util.touch
  */
 
-var Reveal = function (_Plugin) {
-  _inherits(Reveal, _Plugin);
+var Slider = function (_Plugin) {
+  _inherits(Slider, _Plugin);
 
-  function Reveal() {
-    _classCallCheck(this, Reveal);
+  function Slider() {
+    _classCallCheck(this, Slider);
 
-    return _possibleConstructorReturn(this, (Reveal.__proto__ || Object.getPrototypeOf(Reveal)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (Slider.__proto__ || Object.getPrototypeOf(Slider)).apply(this, arguments));
   }
 
-  _createClass(Reveal, [{
+  _createClass(Slider, [{
     key: '_setup',
 
     /**
-     * Creates a new instance of Reveal.
+     * Creates a new instance of a slider control.
      * @class
-     * @name Reveal
-     * @param {jQuery} element - jQuery object to use for the modal.
-     * @param {Object} options - optional parameters.
+     * @name Slider
+     * @param {jQuery} element - jQuery object to make into a slider control.
+     * @param {Object} options - Overrides to the default plugin settings.
      */
     value: function _setup(element, options) {
       this.$element = element;
-      this.options = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.extend({}, Reveal.defaults, this.$element.data(), options);
-      this.className = 'Reveal'; // ie9 back compat
+      this.options = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.extend({}, Slider.defaults, this.$element.data(), options);
+      this.className = 'Slider'; // ie9 back compat
+
+      // Touch and Triggers inits are idempotent, we just need to make sure it's initialied.
+      __WEBPACK_IMPORTED_MODULE_5__foundation_util_touch__["a" /* Touch */].init(__WEBPACK_IMPORTED_MODULE_0_jquery___default.a);
+      __WEBPACK_IMPORTED_MODULE_6__foundation_util_triggers__["a" /* Triggers */].init(__WEBPACK_IMPORTED_MODULE_0_jquery___default.a);
+
       this._init();
 
-      // Triggers init is idempotent, just need to make sure it is initialized
-      __WEBPACK_IMPORTED_MODULE_5__foundation_util_triggers__["a" /* Triggers */].init(__WEBPACK_IMPORTED_MODULE_0_jquery___default.a);
-
-      __WEBPACK_IMPORTED_MODULE_1__foundation_util_keyboard__["a" /* Keyboard */].register('Reveal', {
-        'ESCAPE': 'close'
+      __WEBPACK_IMPORTED_MODULE_1__foundation_util_keyboard__["a" /* Keyboard */].register('Slider', {
+        'ltr': {
+          'ARROW_RIGHT': 'increase',
+          'ARROW_UP': 'increase',
+          'ARROW_DOWN': 'decrease',
+          'ARROW_LEFT': 'decrease',
+          'SHIFT_ARROW_RIGHT': 'increase_fast',
+          'SHIFT_ARROW_UP': 'increase_fast',
+          'SHIFT_ARROW_DOWN': 'decrease_fast',
+          'SHIFT_ARROW_LEFT': 'decrease_fast',
+          'HOME': 'min',
+          'END': 'max'
+        },
+        'rtl': {
+          'ARROW_LEFT': 'increase',
+          'ARROW_RIGHT': 'decrease',
+          'SHIFT_ARROW_LEFT': 'increase_fast',
+          'SHIFT_ARROW_RIGHT': 'decrease_fast'
+        }
       });
     }
 
     /**
-     * Initializes the modal by adding the overlay and close buttons, (if selected).
+     * Initilizes the plugin by reading/setting attributes, creating collections and setting the initial position of the handle(s).
+     * @function
+     * @private
+     */
+
+  }, {
+    key: '_init',
+    value: function _init() {
+      this.inputs = this.$element.find('input');
+      this.handles = this.$element.find('[data-slider-handle]');
+
+      this.$handle = this.handles.eq(0);
+      this.$input = this.inputs.length ? this.inputs.eq(0) : __WEBPACK_IMPORTED_MODULE_0_jquery___default()('#' + this.$handle.attr('aria-controls'));
+      this.$fill = this.$element.find('[data-slider-fill]').css(this.options.vertical ? 'height' : 'width', 0);
+
+      var isDbl = false,
+          _this = this;
+      if (this.options.disabled || this.$element.hasClass(this.options.disabledClass)) {
+        this.options.disabled = true;
+        this.$element.addClass(this.options.disabledClass);
+      }
+      if (!this.inputs.length) {
+        this.inputs = __WEBPACK_IMPORTED_MODULE_0_jquery___default()().add(this.$input);
+        this.options.binding = true;
+      }
+
+      this._setInitAttr(0);
+
+      if (this.handles[1]) {
+        this.options.doubleSided = true;
+        this.$handle2 = this.handles.eq(1);
+        this.$input2 = this.inputs.length > 1 ? this.inputs.eq(1) : __WEBPACK_IMPORTED_MODULE_0_jquery___default()('#' + this.$handle2.attr('aria-controls'));
+
+        if (!this.inputs[1]) {
+          this.inputs = this.inputs.add(this.$input2);
+        }
+        isDbl = true;
+
+        // this.$handle.triggerHandler('click.zf.slider');
+        this._setInitAttr(1);
+      }
+
+      // Set handle positions
+      this.setHandles();
+
+      this._events();
+    }
+  }, {
+    key: 'setHandles',
+    value: function setHandles() {
+      var _this3 = this;
+
+      if (this.handles[1]) {
+        this._setHandlePos(this.$handle, this.inputs.eq(0).val(), true, function () {
+          _this3._setHandlePos(_this3.$handle2, _this3.inputs.eq(1).val(), true);
+        });
+      } else {
+        this._setHandlePos(this.$handle, this.inputs.eq(0).val(), true);
+      }
+    }
+  }, {
+    key: '_reflow',
+    value: function _reflow() {
+      this.setHandles();
+    }
+    /**
+    * @function
+    * @private
+    * @param {Number} value - floating point (the value) to be transformed using to a relative position on the slider (the inverse of _value)
+    */
+
+  }, {
+    key: '_pctOfBar',
+    value: function _pctOfBar(value) {
+      var pctOfBar = percent(value - this.options.start, this.options.end - this.options.start);
+
+      switch (this.options.positionValueFunction) {
+        case "pow":
+          pctOfBar = this._logTransform(pctOfBar);
+          break;
+        case "log":
+          pctOfBar = this._powTransform(pctOfBar);
+          break;
+      }
+
+      return pctOfBar.toFixed(2);
+    }
+
+    /**
+    * @function
+    * @private
+    * @param {Number} pctOfBar - floating point, the relative position of the slider (typically between 0-1) to be transformed to a value
+    */
+
+  }, {
+    key: '_value',
+    value: function _value(pctOfBar) {
+      switch (this.options.positionValueFunction) {
+        case "pow":
+          pctOfBar = this._powTransform(pctOfBar);
+          break;
+        case "log":
+          pctOfBar = this._logTransform(pctOfBar);
+          break;
+      }
+      var value = (this.options.end - this.options.start) * pctOfBar + this.options.start;
+
+      return value;
+    }
+
+    /**
+    * @function
+    * @private
+    * @param {Number} value - floating point (typically between 0-1) to be transformed using the log function
+    */
+
+  }, {
+    key: '_logTransform',
+    value: function _logTransform(value) {
+      return baseLog(this.options.nonLinearBase, value * (this.options.nonLinearBase - 1) + 1);
+    }
+
+    /**
+    * @function
+    * @private
+    * @param {Number} value - floating point (typically between 0-1) to be transformed using the power function
+    */
+
+  }, {
+    key: '_powTransform',
+    value: function _powTransform(value) {
+      return (Math.pow(this.options.nonLinearBase, value) - 1) / (this.options.nonLinearBase - 1);
+    }
+
+    /**
+     * Sets the position of the selected handle and fill bar.
+     * @function
+     * @private
+     * @param {jQuery} $hndl - the selected handle to move.
+     * @param {Number} location - floating point between the start and end values of the slider bar.
+     * @param {Function} cb - callback function to fire on completion.
+     * @fires Slider#moved
+     * @fires Slider#changed
+     */
+
+  }, {
+    key: '_setHandlePos',
+    value: function _setHandlePos($hndl, location, noInvert, cb) {
+      // don't move if the slider has been disabled since its initialization
+      if (this.$element.hasClass(this.options.disabledClass)) {
+        return;
+      }
+      //might need to alter that slightly for bars that will have odd number selections.
+      location = parseFloat(location); //on input change events, convert string to number...grumble.
+
+      // prevent slider from running out of bounds, if value exceeds the limits set through options, override the value to min/max
+      if (location < this.options.start) {
+        location = this.options.start;
+      } else if (location > this.options.end) {
+        location = this.options.end;
+      }
+
+      var isDbl = this.options.doubleSided;
+
+      //this is for single-handled vertical sliders, it adjusts the value to account for the slider being "upside-down"
+      //for click and drag events, it's weird due to the scale(-1, 1) css property
+      if (this.options.vertical && !noInvert) {
+        location = this.options.end - location;
+      }
+
+      if (isDbl) {
+        //this block is to prevent 2 handles from crossing eachother. Could/should be improved.
+        if (this.handles.index($hndl) === 0) {
+          var h2Val = parseFloat(this.$handle2.attr('aria-valuenow'));
+          location = location >= h2Val ? h2Val - this.options.step : location;
+        } else {
+          var h1Val = parseFloat(this.$handle.attr('aria-valuenow'));
+          location = location <= h1Val ? h1Val + this.options.step : location;
+        }
+      }
+
+      var _this = this,
+          vert = this.options.vertical,
+          hOrW = vert ? 'height' : 'width',
+          lOrT = vert ? 'top' : 'left',
+          handleDim = $hndl[0].getBoundingClientRect()[hOrW],
+          elemDim = this.$element[0].getBoundingClientRect()[hOrW],
+
+      //percentage of bar min/max value based on click or drag point
+      pctOfBar = this._pctOfBar(location),
+
+      //number of actual pixels to shift the handle, based on the percentage obtained above
+      pxToMove = (elemDim - handleDim) * pctOfBar,
+
+      //percentage of bar to shift the handle
+      movement = (percent(pxToMove, elemDim) * 100).toFixed(this.options.decimal);
+      //fixing the decimal value for the location number, is passed to other methods as a fixed floating-point value
+      location = parseFloat(location.toFixed(this.options.decimal));
+      // declare empty object for css adjustments, only used with 2 handled-sliders
+      var css = {};
+
+      this._setValues($hndl, location);
+
+      // TODO update to calculate based on values set to respective inputs??
+      if (isDbl) {
+        var isLeftHndl = this.handles.index($hndl) === 0,
+
+        //empty variable, will be used for min-height/width for fill bar
+        dim,
+
+        //percentage w/h of the handle compared to the slider bar
+        handlePct = ~~(percent(handleDim, elemDim) * 100);
+        //if left handle, the math is slightly different than if it's the right handle, and the left/top property needs to be changed for the fill bar
+        if (isLeftHndl) {
+          //left or top percentage value to apply to the fill bar.
+          css[lOrT] = movement + '%';
+          //calculate the new min-height/width for the fill bar.
+          dim = parseFloat(this.$handle2[0].style[lOrT]) - movement + handlePct;
+          //this callback is necessary to prevent errors and allow the proper placement and initialization of a 2-handled slider
+          //plus, it means we don't care if 'dim' isNaN on init, it won't be in the future.
+          if (cb && typeof cb === 'function') {
+            cb();
+          } //this is only needed for the initialization of 2 handled sliders
+        } else {
+          //just caching the value of the left/bottom handle's left/top property
+          var handlePos = parseFloat(this.$handle[0].style[lOrT]);
+          //calculate the new min-height/width for the fill bar. Use isNaN to prevent false positives for numbers <= 0
+          //based on the percentage of movement of the handle being manipulated, less the opposing handle's left/top position, plus the percentage w/h of the handle itself
+          dim = movement - (isNaN(handlePos) ? (this.options.initialStart - this.options.start) / ((this.options.end - this.options.start) / 100) : handlePos) + handlePct;
+        }
+        // assign the min-height/width to our css object
+        css['min-' + hOrW] = dim + '%';
+      }
+
+      this.$element.one('finished.zf.animate', function () {
+        /**
+         * Fires when the handle is done moving.
+         * @event Slider#moved
+         */
+        _this.$element.trigger('moved.zf.slider', [$hndl]);
+      });
+
+      //because we don't know exactly how the handle will be moved, check the amount of time it should take to move.
+      var moveTime = this.$element.data('dragging') ? 1000 / 60 : this.options.moveTime;
+
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__foundation_util_motion__["a" /* Move */])(moveTime, $hndl, function () {
+        // adjusting the left/top property of the handle, based on the percentage calculated above
+        // if movement isNaN, that is because the slider is hidden and we cannot determine handle width,
+        // fall back to next best guess.
+        if (isNaN(movement)) {
+          $hndl.css(lOrT, pctOfBar * 100 + '%');
+        } else {
+          $hndl.css(lOrT, movement + '%');
+        }
+
+        if (!_this.options.doubleSided) {
+          //if single-handled, a simple method to expand the fill bar
+          _this.$fill.css(hOrW, pctOfBar * 100 + '%');
+        } else {
+          //otherwise, use the css object we created above
+          _this.$fill.css(css);
+        }
+      });
+
+      /**
+       * Fires when the value has not been change for a given time.
+       * @event Slider#changed
+       */
+      clearTimeout(_this.timeout);
+      _this.timeout = setTimeout(function () {
+        _this.$element.trigger('changed.zf.slider', [$hndl]);
+      }, _this.options.changedDelay);
+    }
+
+    /**
+     * Sets the initial attribute for the slider element.
+     * @function
+     * @private
+     * @param {Number} idx - index of the current handle/input to use.
+     */
+
+  }, {
+    key: '_setInitAttr',
+    value: function _setInitAttr(idx) {
+      var initVal = idx === 0 ? this.options.initialStart : this.options.initialEnd;
+      var id = this.inputs.eq(idx).attr('id') || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__foundation_util_core__["a" /* GetYoDigits */])(6, 'slider');
+      this.inputs.eq(idx).attr({
+        'id': id,
+        'max': this.options.end,
+        'min': this.options.start,
+        'step': this.options.step
+      });
+      this.inputs.eq(idx).val(initVal);
+      this.handles.eq(idx).attr({
+        'role': 'slider',
+        'aria-controls': id,
+        'aria-valuemax': this.options.end,
+        'aria-valuemin': this.options.start,
+        'aria-valuenow': initVal,
+        'aria-orientation': this.options.vertical ? 'vertical' : 'horizontal',
+        'tabindex': 0
+      });
+    }
+
+    /**
+     * Sets the input and `aria-valuenow` values for the slider element.
+     * @function
+     * @private
+     * @param {jQuery} $handle - the currently selected handle.
+     * @param {Number} val - floating point of the new value.
+     */
+
+  }, {
+    key: '_setValues',
+    value: function _setValues($handle, val) {
+      var idx = this.options.doubleSided ? this.handles.index($handle) : 0;
+      this.inputs.eq(idx).val(val);
+      $handle.attr('aria-valuenow', val);
+    }
+
+    /**
+     * Handles events on the slider element.
+     * Calculates the new location of the current handle.
+     * If there are two handles and the bar was clicked, it determines which handle to move.
+     * @function
+     * @private
+     * @param {Object} e - the `event` object passed from the listener.
+     * @param {jQuery} $handle - the current handle to calculate for, if selected.
+     * @param {Number} val - floating point number for the new value of the slider.
+     * TODO clean this up, there's a lot of repeated code between this and the _setHandlePos fn.
+     */
+
+  }, {
+    key: '_handleEvent',
+    value: function _handleEvent(e, $handle, val) {
+      var value, hasVal;
+      if (!val) {
+        //click or drag events
+        e.preventDefault();
+        var _this = this,
+            vertical = this.options.vertical,
+            param = vertical ? 'height' : 'width',
+            direction = vertical ? 'top' : 'left',
+            eventOffset = vertical ? e.pageY : e.pageX,
+            halfOfHandle = this.$handle[0].getBoundingClientRect()[param] / 2,
+            barDim = this.$element[0].getBoundingClientRect()[param],
+            windowScroll = vertical ? __WEBPACK_IMPORTED_MODULE_0_jquery___default()(window).scrollTop() : __WEBPACK_IMPORTED_MODULE_0_jquery___default()(window).scrollLeft();
+
+        var elemOffset = this.$element.offset()[direction];
+
+        // touch events emulated by the touch util give position relative to screen, add window.scroll to event coordinates...
+        // best way to guess this is simulated is if clientY == pageY
+        if (e.clientY === e.pageY) {
+          eventOffset = eventOffset + windowScroll;
+        }
+        var eventFromBar = eventOffset - elemOffset;
+        var barXY;
+        if (eventFromBar < 0) {
+          barXY = 0;
+        } else if (eventFromBar > barDim) {
+          barXY = barDim;
+        } else {
+          barXY = eventFromBar;
+        }
+        var offsetPct = percent(barXY, barDim);
+
+        value = this._value(offsetPct);
+
+        // turn everything around for RTL, yay math!
+        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__foundation_util_core__["b" /* rtl */])() && !this.options.vertical) {
+          value = this.options.end - value;
+        }
+
+        value = _this._adjustValue(null, value);
+        //boolean flag for the setHandlePos fn, specifically for vertical sliders
+        hasVal = false;
+
+        if (!$handle) {
+          //figure out which handle it is, pass it to the next function.
+          var firstHndlPos = absPosition(this.$handle, direction, barXY, param),
+              secndHndlPos = absPosition(this.$handle2, direction, barXY, param);
+          $handle = firstHndlPos <= secndHndlPos ? this.$handle : this.$handle2;
+        }
+      } else {
+        //change event on input
+        value = this._adjustValue(null, val);
+        hasVal = true;
+      }
+
+      this._setHandlePos($handle, value, hasVal);
+    }
+
+    /**
+     * Adjustes value for handle in regard to step value. returns adjusted value
+     * @function
+     * @private
+     * @param {jQuery} $handle - the selected handle.
+     * @param {Number} value - value to adjust. used if $handle is falsy
+     */
+
+  }, {
+    key: '_adjustValue',
+    value: function _adjustValue($handle, value) {
+      var val,
+          step = this.options.step,
+          div = parseFloat(step / 2),
+          left,
+          prev_val,
+          next_val;
+      if (!!$handle) {
+        val = parseFloat($handle.attr('aria-valuenow'));
+      } else {
+        val = value;
+      }
+      left = val % step;
+      prev_val = val - left;
+      next_val = prev_val + step;
+      if (left === 0) {
+        return val;
+      }
+      val = val >= prev_val + div ? next_val : prev_val;
+      return val;
+    }
+
+    /**
+     * Adds event listeners to the slider elements.
+     * @function
+     * @private
+     */
+
+  }, {
+    key: '_events',
+    value: function _events() {
+      this._eventsForHandle(this.$handle);
+      if (this.handles[1]) {
+        this._eventsForHandle(this.$handle2);
+      }
+    }
+
+    /**
+     * Adds event listeners a particular handle
+     * @function
+     * @private
+     * @param {jQuery} $handle - the current handle to apply listeners to.
+     */
+
+  }, {
+    key: '_eventsForHandle',
+    value: function _eventsForHandle($handle) {
+      var _this = this,
+          curHandle,
+          timer;
+
+      this.inputs.off('change.zf.slider').on('change.zf.slider', function (e) {
+        var idx = _this.inputs.index(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(this));
+        _this._handleEvent(e, _this.handles.eq(idx), __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this).val());
+      });
+
+      if (this.options.clickSelect) {
+        this.$element.off('click.zf.slider').on('click.zf.slider', function (e) {
+          if (_this.$element.data('dragging')) {
+            return false;
+          }
+
+          if (!__WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.target).is('[data-slider-handle]')) {
+            if (_this.options.doubleSided) {
+              _this._handleEvent(e);
+            } else {
+              _this._handleEvent(e, _this.$handle);
+            }
+          }
+        });
+      }
+
+      if (this.options.draggable) {
+        this.handles.addTouch();
+
+        var $body = __WEBPACK_IMPORTED_MODULE_0_jquery___default()('body');
+        $handle.off('mousedown.zf.slider').on('mousedown.zf.slider', function (e) {
+          $handle.addClass('is-dragging');
+          _this.$fill.addClass('is-dragging'); //
+          _this.$element.data('dragging', true);
+
+          curHandle = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(e.currentTarget);
+
+          $body.on('mousemove.zf.slider', function (e) {
+            e.preventDefault();
+            _this._handleEvent(e, curHandle);
+          }).on('mouseup.zf.slider', function (e) {
+            _this._handleEvent(e, curHandle);
+
+            $handle.removeClass('is-dragging');
+            _this.$fill.removeClass('is-dragging');
+            _this.$element.data('dragging', false);
+
+            $body.off('mousemove.zf.slider mouseup.zf.slider');
+          });
+        })
+        // prevent events triggered by touch
+        .on('selectstart.zf.slider touchmove.zf.slider', function (e) {
+          e.preventDefault();
+        });
+      }
+
+      $handle.off('keydown.zf.slider').on('keydown.zf.slider', function (e) {
+        var _$handle = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this),
+            idx = _this.options.doubleSided ? _this.handles.index(_$handle) : 0,
+            oldValue = parseFloat(_this.inputs.eq(idx).val()),
+            newValue;
+
+        // handle keyboard event with keyboard util
+        __WEBPACK_IMPORTED_MODULE_1__foundation_util_keyboard__["a" /* Keyboard */].handleKey(e, 'Slider', {
+          decrease: function () {
+            newValue = oldValue - _this.options.step;
+          },
+          increase: function () {
+            newValue = oldValue + _this.options.step;
+          },
+          decrease_fast: function () {
+            newValue = oldValue - _this.options.step * 10;
+          },
+          increase_fast: function () {
+            newValue = oldValue + _this.options.step * 10;
+          },
+          min: function () {
+            newValue = _this.options.start;
+          },
+          max: function () {
+            newValue = _this.options.end;
+          },
+          handled: function () {
+            // only set handle pos when event was handled specially
+            e.preventDefault();
+            _this._setHandlePos(_$handle, newValue, true);
+          }
+        });
+        /*if (newValue) { // if pressed key has special function, update value
+          e.preventDefault();
+          _this._setHandlePos(_$handle, newValue);
+        }*/
+      });
+    }
+
+    /**
+     * Destroys the slider plugin.
+     */
+
+  }, {
+    key: '_destroy',
+    value: function _destroy() {
+      this.handles.off('.zf.slider');
+      this.inputs.off('.zf.slider');
+      this.$element.off('.zf.slider');
+
+      clearTimeout(this.timeout);
+    }
+  }]);
+
+  return Slider;
+}(__WEBPACK_IMPORTED_MODULE_4__foundation_plugin__["a" /* Plugin */]);
+
+Slider.defaults = {
+  /**
+   * Minimum value for the slider scale.
+   * @option
+   * @type {number}
+   * @default 0
+   */
+  start: 0,
+  /**
+   * Maximum value for the slider scale.
+   * @option
+   * @type {number}
+   * @default 100
+   */
+  end: 100,
+  /**
+   * Minimum value change per change event.
+   * @option
+   * @type {number}
+   * @default 1
+   */
+  step: 1,
+  /**
+   * Value at which the handle/input *(left handle/first input)* should be set to on initialization.
+   * @option
+   * @type {number}
+   * @default 0
+   */
+  initialStart: 0,
+  /**
+   * Value at which the right handle/second input should be set to on initialization.
+   * @option
+   * @type {number}
+   * @default 100
+   */
+  initialEnd: 100,
+  /**
+   * Allows the input to be located outside the container and visible. Set to by the JS
+   * @option
+   * @type {boolean}
+   * @default false
+   */
+  binding: false,
+  /**
+   * Allows the user to click/tap on the slider bar to select a value.
+   * @option
+   * @type {boolean}
+   * @default true
+   */
+  clickSelect: true,
+  /**
+   * Set to true and use the `vertical` class to change alignment to vertical.
+   * @option
+   * @type {boolean}
+   * @default false
+   */
+  vertical: false,
+  /**
+   * Allows the user to drag the slider handle(s) to select a value.
+   * @option
+   * @type {boolean}
+   * @default true
+   */
+  draggable: true,
+  /**
+   * Disables the slider and prevents event listeners from being applied. Double checked by JS with `disabledClass`.
+   * @option
+   * @type {boolean}
+   * @default false
+   */
+  disabled: false,
+  /**
+   * Allows the use of two handles. Double checked by the JS. Changes some logic handling.
+   * @option
+   * @type {boolean}
+   * @default false
+   */
+  doubleSided: false,
+  /**
+   * Potential future feature.
+   */
+  // steps: 100,
+  /**
+   * Number of decimal places the plugin should go to for floating point precision.
+   * @option
+   * @type {number}
+   * @default 2
+   */
+  decimal: 2,
+  /**
+   * Time delay for dragged elements.
+   */
+  // dragDelay: 0,
+  /**
+   * Time, in ms, to animate the movement of a slider handle if user clicks/taps on the bar. Needs to be manually set if updating the transition time in the Sass settings.
+   * @option
+   * @type {number}
+   * @default 200
+   */
+  moveTime: 200, //update this if changing the transition time in the sass
+  /**
+   * Class applied to disabled sliders.
+   * @option
+   * @type {string}
+   * @default 'disabled'
+   */
+  disabledClass: 'disabled',
+  /**
+   * Will invert the default layout for a vertical<span data-tooltip title="who would do this???"> </span>slider.
+   * @option
+   * @type {boolean}
+   * @default false
+   */
+  invertVertical: false,
+  /**
+   * Milliseconds before the `changed.zf-slider` event is triggered after value change.
+   * @option
+   * @type {number}
+   * @default 500
+   */
+  changedDelay: 500,
+  /**
+  * Basevalue for non-linear sliders
+  * @option
+  * @type {number}
+  * @default 5
+  */
+  nonLinearBase: 5,
+  /**
+  * Basevalue for non-linear sliders, possible values are: `'linear'`, `'pow'` & `'log'`. Pow and Log use the nonLinearBase setting.
+  * @option
+  * @type {string}
+  * @default 'linear'
+  */
+  positionValueFunction: 'linear'
+};
+
+function percent(frac, num) {
+  return frac / num;
+}
+function absPosition($handle, dir, clickPos, param) {
+  return Math.abs($handle.position()[dir] + $handle[param]() / 2 - clickPos);
+}
+function baseLog(base, value) {
+  return Math.log(value) / Math.log(base);
+}
+
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Tooltip; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__foundation_util_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__foundation_util_mediaQuery__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__foundation_util_triggers__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__foundation_positionable__ = __webpack_require__(9);
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+
+/**
+ * Tooltip module.
+ * @module foundation.tooltip
+ * @requires foundation.util.box
+ * @requires foundation.util.mediaQuery
+ * @requires foundation.util.triggers
+ */
+
+var Tooltip = function (_Positionable) {
+  _inherits(Tooltip, _Positionable);
+
+  function Tooltip() {
+    _classCallCheck(this, Tooltip);
+
+    return _possibleConstructorReturn(this, (Tooltip.__proto__ || Object.getPrototypeOf(Tooltip)).apply(this, arguments));
+  }
+
+  _createClass(Tooltip, [{
+    key: '_setup',
+
+    /**
+     * Creates a new instance of a Tooltip.
+     * @class
+     * @name Tooltip
+     * @fires Tooltip#init
+     * @param {jQuery} element - jQuery object to attach a tooltip to.
+     * @param {Object} options - object to extend the default configuration.
+     */
+    value: function _setup(element, options) {
+      this.$element = element;
+      this.options = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.extend({}, Tooltip.defaults, this.$element.data(), options);
+      this.className = 'Tooltip'; // ie9 back compat
+
+      this.isActive = false;
+      this.isClick = false;
+
+      // Triggers init is idempotent, just need to make sure it is initialized
+      __WEBPACK_IMPORTED_MODULE_3__foundation_util_triggers__["a" /* Triggers */].init(__WEBPACK_IMPORTED_MODULE_0_jquery___default.a);
+
+      this._init();
+    }
+
+    /**
+     * Initializes the tooltip by setting the creating the tip element, adding it's text, setting private variables and setting attributes on the anchor.
      * @private
      */
 
@@ -1209,400 +2097,244 @@ var Reveal = function (_Plugin) {
     key: '_init',
     value: function _init() {
       __WEBPACK_IMPORTED_MODULE_2__foundation_util_mediaQuery__["a" /* MediaQuery */]._init();
-      this.id = this.$element.attr('id');
-      this.isActive = false;
-      this.cached = { mq: __WEBPACK_IMPORTED_MODULE_2__foundation_util_mediaQuery__["a" /* MediaQuery */].current };
-      this.isMobile = mobileSniff();
+      var elemId = this.$element.attr('aria-describedby') || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__foundation_util_core__["a" /* GetYoDigits */])(6, 'tooltip');
 
-      this.$anchor = __WEBPACK_IMPORTED_MODULE_0_jquery___default()('[data-open="' + this.id + '"]').length ? __WEBPACK_IMPORTED_MODULE_0_jquery___default()('[data-open="' + this.id + '"]') : __WEBPACK_IMPORTED_MODULE_0_jquery___default()('[data-toggle="' + this.id + '"]');
-      this.$anchor.attr({
-        'aria-controls': this.id,
-        'aria-haspopup': true,
-        'tabindex': 0
-      });
+      this.options.tipText = this.options.tipText || this.$element.attr('title');
+      this.template = this.options.template ? __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this.options.template) : this._buildTemplate(elemId);
 
-      if (this.options.fullScreen || this.$element.hasClass('full')) {
-        this.options.fullScreen = true;
-        this.options.overlay = false;
-      }
-      if (this.options.overlay && !this.$overlay) {
-        this.$overlay = this._makeOverlay(this.id);
+      if (this.options.allowHtml) {
+        this.template.appendTo(document.body).html(this.options.tipText).hide();
+      } else {
+        this.template.appendTo(document.body).text(this.options.tipText).hide();
       }
 
       this.$element.attr({
-        'role': 'dialog',
-        'aria-hidden': true,
-        'data-yeti-box': this.id,
-        'data-resize': this.id
-      });
+        'title': '',
+        'aria-describedby': elemId,
+        'data-yeti-box': elemId,
+        'data-toggle': elemId,
+        'data-resize': elemId
+      }).addClass(this.options.triggerClass);
 
-      if (this.$overlay) {
-        this.$element.detach().appendTo(this.$overlay);
-      } else {
-        this.$element.detach().appendTo(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(this.options.appendTo));
-        this.$element.addClass('without-overlay');
-      }
+      _get(Tooltip.prototype.__proto__ || Object.getPrototypeOf(Tooltip.prototype), '_init', this).call(this);
       this._events();
-      if (this.options.deepLink && window.location.hash === '#' + this.id) {
-        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(window).one('load.zf.reveal', this.open.bind(this));
+    }
+  }, {
+    key: '_getDefaultPosition',
+    value: function _getDefaultPosition() {
+      // handle legacy classnames
+      var position = this.$element[0].className.match(/\b(top|left|right|bottom)\b/g);
+      return position ? position[0] : 'top';
+    }
+  }, {
+    key: '_getDefaultAlignment',
+    value: function _getDefaultAlignment() {
+      return 'center';
+    }
+  }, {
+    key: '_getHOffset',
+    value: function _getHOffset() {
+      if (this.position === 'left' || this.position === 'right') {
+        return this.options.hOffset + this.options.tooltipWidth;
+      } else {
+        return this.options.hOffset;
+      }
+    }
+  }, {
+    key: '_getVOffset',
+    value: function _getVOffset() {
+      if (this.position === 'top' || this.position === 'bottom') {
+        return this.options.vOffset + this.options.tooltipHeight;
+      } else {
+        return this.options.vOffset;
       }
     }
 
     /**
-     * Creates an overlay div to display behind the modal.
+     * builds the tooltip element, adds attributes, and returns the template.
      * @private
      */
 
   }, {
-    key: '_makeOverlay',
-    value: function _makeOverlay() {
-      var additionalOverlayClasses = '';
-
-      if (this.options.additionalOverlayClasses) {
-        additionalOverlayClasses = ' ' + this.options.additionalOverlayClasses;
-      }
-
-      return __WEBPACK_IMPORTED_MODULE_0_jquery___default()('<div></div>').addClass('reveal-overlay' + additionalOverlayClasses).appendTo(this.options.appendTo);
+    key: '_buildTemplate',
+    value: function _buildTemplate(id) {
+      var templateClasses = (this.options.tooltipClass + ' ' + this.options.positionClass + ' ' + this.options.templateClasses).trim();
+      var $template = __WEBPACK_IMPORTED_MODULE_0_jquery___default()('<div></div>').addClass(templateClasses).attr({
+        'role': 'tooltip',
+        'aria-hidden': true,
+        'data-is-active': false,
+        'data-is-focus': false,
+        'id': id
+      });
+      return $template;
     }
 
     /**
-     * Updates position of modal
-     * TODO:  Figure out if we actually need to cache these values or if it doesn't matter
+     * sets the position class of an element and recursively calls itself until there are no more possible positions to attempt, or the tooltip element is no longer colliding.
+     * if the tooltip is larger than the screen width, default to full width - any user selected margin
      * @private
      */
 
   }, {
-    key: '_updatePosition',
-    value: function _updatePosition() {
-      var width = this.$element.outerWidth();
-      var outerWidth = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(window).width();
-      var height = this.$element.outerHeight();
-      var outerHeight = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(window).height();
-      var left, top;
-      if (this.options.hOffset === 'auto') {
-        left = parseInt((outerWidth - width) / 2, 10);
-      } else {
-        left = parseInt(this.options.hOffset, 10);
-      }
-      if (this.options.vOffset === 'auto') {
-        if (height > outerHeight) {
-          top = parseInt(Math.min(100, outerHeight / 10), 10);
-        } else {
-          top = parseInt((outerHeight - height) / 4, 10);
-        }
-      } else {
-        top = parseInt(this.options.vOffset, 10);
-      }
-      this.$element.css({ top: top + 'px' });
-      // only worry about left if we don't have an overlay or we havea  horizontal offset,
-      // otherwise we're perfectly in the middle
-      if (!this.$overlay || this.options.hOffset !== 'auto') {
-        this.$element.css({ left: left + 'px' });
-        this.$element.css({ margin: '0px' });
-      }
+    key: '_setPosition',
+    value: function _setPosition() {
+      _get(Tooltip.prototype.__proto__ || Object.getPrototypeOf(Tooltip.prototype), '_setPosition', this).call(this, this.$element, this.template);
     }
 
     /**
-     * Adds event handlers for the modal.
+     * reveals the tooltip, and fires an event to close any other open tooltips on the page
+     * @fires Tooltip#closeme
+     * @fires Tooltip#show
+     * @function
+     */
+
+  }, {
+    key: 'show',
+    value: function show() {
+      if (this.options.showOn !== 'all' && !__WEBPACK_IMPORTED_MODULE_2__foundation_util_mediaQuery__["a" /* MediaQuery */].is(this.options.showOn)) {
+        // console.error('The screen is too small to display this tooltip');
+        return false;
+      }
+
+      var _this = this;
+      this.template.css('visibility', 'hidden').show();
+      this._setPosition();
+      this.template.removeClass('top bottom left right').addClass(this.position);
+      this.template.removeClass('align-top align-bottom align-left align-right align-center').addClass('align-' + this.alignment);
+
+      /**
+       * Fires to close all other open tooltips on the page
+       * @event Closeme#tooltip
+       */
+      this.$element.trigger('closeme.zf.tooltip', this.template.attr('id'));
+
+      this.template.attr({
+        'data-is-active': true,
+        'aria-hidden': false
+      });
+      _this.isActive = true;
+      // console.log(this.template);
+      this.template.stop().hide().css('visibility', '').fadeIn(this.options.fadeInDuration, function () {
+        //maybe do stuff?
+      });
+      /**
+       * Fires when the tooltip is shown
+       * @event Tooltip#show
+       */
+      this.$element.trigger('show.zf.tooltip');
+    }
+
+    /**
+     * Hides the current tooltip, and resets the positioning class if it was changed due to collision
+     * @fires Tooltip#hide
+     * @function
+     */
+
+  }, {
+    key: 'hide',
+    value: function hide() {
+      // console.log('hiding', this.$element.data('yeti-box'));
+      var _this = this;
+      this.template.stop().attr({
+        'aria-hidden': true,
+        'data-is-active': false
+      }).fadeOut(this.options.fadeOutDuration, function () {
+        _this.isActive = false;
+        _this.isClick = false;
+      });
+      /**
+       * fires when the tooltip is hidden
+       * @event Tooltip#hide
+       */
+      this.$element.trigger('hide.zf.tooltip');
+    }
+
+    /**
+     * adds event listeners for the tooltip and its anchor
+     * TODO combine some of the listeners like focus and mouseenter, etc.
      * @private
      */
 
   }, {
     key: '_events',
     value: function _events() {
-      var _this3 = this;
-
       var _this = this;
+      var $template = this.template;
+      var isFocus = false;
+
+      if (!this.options.disableHover) {
+
+        this.$element.on('mouseenter.zf.tooltip', function (e) {
+          if (!_this.isActive) {
+            _this.timeout = setTimeout(function () {
+              _this.show();
+            }, _this.options.hoverDelay);
+          }
+        }).on('mouseleave.zf.tooltip', function (e) {
+          clearTimeout(_this.timeout);
+          if (!isFocus || _this.isClick && !_this.options.clickOpen) {
+            _this.hide();
+          }
+        });
+      }
+
+      if (this.options.clickOpen) {
+        this.$element.on('mousedown.zf.tooltip', function (e) {
+          e.stopImmediatePropagation();
+          if (_this.isClick) {
+            //_this.hide();
+            // _this.isClick = false;
+          } else {
+            _this.isClick = true;
+            if ((_this.options.disableHover || !_this.$element.attr('tabindex')) && !_this.isActive) {
+              _this.show();
+            }
+          }
+        });
+      } else {
+        this.$element.on('mousedown.zf.tooltip', function (e) {
+          e.stopImmediatePropagation();
+          _this.isClick = true;
+        });
+      }
+
+      if (!this.options.disableForTouch) {
+        this.$element.on('tap.zf.tooltip touchend.zf.tooltip', function (e) {
+          _this.isActive ? _this.hide() : _this.show();
+        });
+      }
 
       this.$element.on({
-        'open.zf.trigger': this.open.bind(this),
-        'close.zf.trigger': function (event, $element) {
-          if (event.target === _this.$element[0] || __WEBPACK_IMPORTED_MODULE_0_jquery___default()(event.target).parents('[data-closable]')[0] === $element) {
-            // only close reveal when it's explicitly called
-            return _this3.close.apply(_this3);
-          }
-        },
-        'toggle.zf.trigger': this.toggle.bind(this),
-        'resizeme.zf.trigger': function () {
-          _this._updatePosition();
-        }
+        // 'toggle.zf.trigger': this.toggle.bind(this),
+        // 'close.zf.trigger': this.hide.bind(this)
+        'close.zf.trigger': this.hide.bind(this)
       });
 
-      if (this.options.closeOnClick && this.options.overlay) {
-        this.$overlay.off('.zf.reveal').on('click.zf.reveal', function (e) {
-          if (e.target === _this.$element[0] || __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.contains(_this.$element[0], e.target) || !__WEBPACK_IMPORTED_MODULE_0_jquery___default.a.contains(document, e.target)) {
-            return;
+      this.$element.on('focus.zf.tooltip', function (e) {
+        isFocus = true;
+        if (_this.isClick) {
+          // If we're not showing open on clicks, we need to pretend a click-launched focus isn't
+          // a real focus, otherwise on hover and come back we get bad behavior
+          if (!_this.options.clickOpen) {
+            isFocus = false;
           }
-          _this.close();
-        });
-      }
-      if (this.options.deepLink) {
-        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(window).on('popstate.zf.reveal:' + this.id, this._handleState.bind(this));
-      }
-    }
-
-    /**
-     * Handles modal methods on back/forward button clicks or any other event that triggers popstate.
-     * @private
-     */
-
-  }, {
-    key: '_handleState',
-    value: function _handleState(e) {
-      if (window.location.hash === '#' + this.id && !this.isActive) {
-        this.open();
-      } else {
-        this.close();
-      }
-    }
-
-    /**
-     * Opens the modal controlled by `this.$anchor`, and closes all others by default.
-     * @function
-     * @fires Reveal#closeme
-     * @fires Reveal#open
-     */
-
-  }, {
-    key: 'open',
-    value: function open() {
-      var _this4 = this;
-
-      // either update or replace browser history
-      if (this.options.deepLink) {
-        var hash = '#' + this.id;
-
-        if (window.history.pushState) {
-          if (this.options.updateHistory) {
-            window.history.pushState({}, '', hash);
-          } else {
-            window.history.replaceState({}, '', hash);
-          }
+          return false;
         } else {
-          window.location.hash = hash;
+          _this.show();
         }
-      }
-
-      this.isActive = true;
-
-      // Make elements invisible, but remove display: none so we can get size and positioning
-      this.$element.css({ 'visibility': 'hidden' }).show().scrollTop(0);
-      if (this.options.overlay) {
-        this.$overlay.css({ 'visibility': 'hidden' }).show();
-      }
-
-      this._updatePosition();
-
-      this.$element.hide().css({ 'visibility': '' });
-
-      if (this.$overlay) {
-        this.$overlay.css({ 'visibility': '' }).hide();
-        if (this.$element.hasClass('fast')) {
-          this.$overlay.addClass('fast');
-        } else if (this.$element.hasClass('slow')) {
-          this.$overlay.addClass('slow');
+      }).on('focusout.zf.tooltip', function (e) {
+        isFocus = false;
+        _this.isClick = false;
+        _this.hide();
+      }).on('resizeme.zf.trigger', function () {
+        if (_this.isActive) {
+          _this._setPosition();
         }
-      }
-
-      if (!this.options.multipleOpened) {
-        /**
-         * Fires immediately before the modal opens.
-         * Closes any other modals that are currently open
-         * @event Reveal#closeme
-         */
-        this.$element.trigger('closeme.zf.reveal', this.id);
-      }
-
-      var _this = this;
-
-      function addRevealOpenClasses() {
-        if (_this.isMobile) {
-          if (!_this.originalScrollPos) {
-            _this.originalScrollPos = window.pageYOffset;
-          }
-          __WEBPACK_IMPORTED_MODULE_0_jquery___default()('html, body').addClass('is-reveal-open');
-        } else {
-          __WEBPACK_IMPORTED_MODULE_0_jquery___default()('body').addClass('is-reveal-open');
-        }
-      }
-      // Motion UI method of reveal
-      if (this.options.animationIn) {
-        (function () {
-          var afterAnimation = function () {
-            _this.$element.attr({
-              'aria-hidden': false,
-              'tabindex': -1
-            }).focus();
-            addRevealOpenClasses();
-            __WEBPACK_IMPORTED_MODULE_1__foundation_util_keyboard__["a" /* Keyboard */].trapFocus(_this.$element);
-          };
-
-          if (_this4.options.overlay) {
-            __WEBPACK_IMPORTED_MODULE_3__foundation_util_motion__["a" /* Motion */].animateIn(_this4.$overlay, 'fade-in');
-          }
-          __WEBPACK_IMPORTED_MODULE_3__foundation_util_motion__["a" /* Motion */].animateIn(_this4.$element, _this4.options.animationIn, function () {
-            if (_this4.$element) {
-              // protect against object having been removed
-              _this4.focusableElements = __WEBPACK_IMPORTED_MODULE_1__foundation_util_keyboard__["a" /* Keyboard */].findFocusable(_this4.$element);
-              afterAnimation();
-            }
-          });
-        })();
-      }
-      // jQuery method of reveal
-      else {
-          if (this.options.overlay) {
-            this.$overlay.show(0);
-          }
-          this.$element.show(this.options.showDelay);
-        }
-
-      // handle accessibility
-      this.$element.attr({
-        'aria-hidden': false,
-        'tabindex': -1
-      }).focus();
-      __WEBPACK_IMPORTED_MODULE_1__foundation_util_keyboard__["a" /* Keyboard */].trapFocus(this.$element);
-
-      addRevealOpenClasses();
-
-      this._extraHandlers();
-
-      /**
-       * Fires when the modal has successfully opened.
-       * @event Reveal#open
-       */
-      this.$element.trigger('open.zf.reveal');
+      });
     }
 
     /**
-     * Adds extra event handlers for the body and window if necessary.
-     * @private
-     */
-
-  }, {
-    key: '_extraHandlers',
-    value: function _extraHandlers() {
-      var _this = this;
-      if (!this.$element) {
-        return;
-      } // If we're in the middle of cleanup, don't freak out
-      this.focusableElements = __WEBPACK_IMPORTED_MODULE_1__foundation_util_keyboard__["a" /* Keyboard */].findFocusable(this.$element);
-
-      if (!this.options.overlay && this.options.closeOnClick && !this.options.fullScreen) {
-        __WEBPACK_IMPORTED_MODULE_0_jquery___default()('body').on('click.zf.reveal', function (e) {
-          if (e.target === _this.$element[0] || __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.contains(_this.$element[0], e.target) || !__WEBPACK_IMPORTED_MODULE_0_jquery___default.a.contains(document, e.target)) {
-            return;
-          }
-          _this.close();
-        });
-      }
-
-      if (this.options.closeOnEsc) {
-        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(window).on('keydown.zf.reveal', function (e) {
-          __WEBPACK_IMPORTED_MODULE_1__foundation_util_keyboard__["a" /* Keyboard */].handleKey(e, 'Reveal', {
-            close: function () {
-              if (_this.options.closeOnEsc) {
-                _this.close();
-              }
-            }
-          });
-        });
-      }
-    }
-
-    /**
-     * Closes the modal.
-     * @function
-     * @fires Reveal#closed
-     */
-
-  }, {
-    key: 'close',
-    value: function close() {
-      if (!this.isActive || !this.$element.is(':visible')) {
-        return false;
-      }
-      var _this = this;
-
-      // Motion UI method of hiding
-      if (this.options.animationOut) {
-        if (this.options.overlay) {
-          __WEBPACK_IMPORTED_MODULE_3__foundation_util_motion__["a" /* Motion */].animateOut(this.$overlay, 'fade-out');
-        }
-
-        __WEBPACK_IMPORTED_MODULE_3__foundation_util_motion__["a" /* Motion */].animateOut(this.$element, this.options.animationOut, finishUp);
-      }
-      // jQuery method of hiding
-      else {
-          this.$element.hide(this.options.hideDelay);
-
-          if (this.options.overlay) {
-            this.$overlay.hide(0, finishUp);
-          } else {
-            finishUp();
-          }
-        }
-
-      // Conditionals to remove extra event listeners added on open
-      if (this.options.closeOnEsc) {
-        __WEBPACK_IMPORTED_MODULE_0_jquery___default()(window).off('keydown.zf.reveal');
-      }
-
-      if (!this.options.overlay && this.options.closeOnClick) {
-        __WEBPACK_IMPORTED_MODULE_0_jquery___default()('body').off('click.zf.reveal');
-      }
-
-      this.$element.off('keydown.zf.reveal');
-
-      function finishUp() {
-        if (_this.isMobile) {
-          if (__WEBPACK_IMPORTED_MODULE_0_jquery___default()('.reveal:visible').length === 0) {
-            __WEBPACK_IMPORTED_MODULE_0_jquery___default()('html, body').removeClass('is-reveal-open');
-          }
-          if (_this.originalScrollPos) {
-            __WEBPACK_IMPORTED_MODULE_0_jquery___default()('body').scrollTop(_this.originalScrollPos);
-            _this.originalScrollPos = null;
-          }
-        } else {
-          if (__WEBPACK_IMPORTED_MODULE_0_jquery___default()('.reveal:visible').length === 0) {
-            __WEBPACK_IMPORTED_MODULE_0_jquery___default()('body').removeClass('is-reveal-open');
-          }
-        }
-
-        __WEBPACK_IMPORTED_MODULE_1__foundation_util_keyboard__["a" /* Keyboard */].releaseFocus(_this.$element);
-
-        _this.$element.attr('aria-hidden', true);
-
-        /**
-        * Fires when the modal is done closing.
-        * @event Reveal#closed
-        */
-        _this.$element.trigger('closed.zf.reveal');
-      }
-
-      /**
-      * Resets the modal content
-      * This prevents a running video to keep going in the background
-      */
-      if (this.options.resetOnClose) {
-        this.$element.html(this.$element.html());
-      }
-
-      this.isActive = false;
-      if (_this.options.deepLink) {
-        if (window.history.replaceState) {
-          window.history.replaceState('', document.title, window.location.href.replace('#' + this.id, ''));
-        } else {
-          window.location.hash = '';
-        }
-      }
-
-      this.$anchor.focus();
-    }
-
-    /**
-     * Toggles the open/closed state of a modal.
+     * adds a toggle method, in addition to the static show() & hide() functions
      * @function
      */
 
@@ -1610,253 +2342,679 @@ var Reveal = function (_Plugin) {
     key: 'toggle',
     value: function toggle() {
       if (this.isActive) {
-        this.close();
+        this.hide();
       } else {
-        this.open();
+        this.show();
       }
     }
-  }, {
-    key: '_destroy',
-
 
     /**
-     * Destroys an instance of a modal.
+     * Destroys an instance of tooltip, removes template element from the view.
      * @function
      */
+
+  }, {
+    key: '_destroy',
     value: function _destroy() {
-      if (this.options.overlay) {
-        this.$element.appendTo(__WEBPACK_IMPORTED_MODULE_0_jquery___default()(this.options.appendTo)); // move $element outside of $overlay to prevent error unregisterPlugin()
-        this.$overlay.hide().off().remove();
-      }
-      this.$element.hide().off();
-      this.$anchor.off('.zf');
-      __WEBPACK_IMPORTED_MODULE_0_jquery___default()(window).off('.zf.reveal:' + this.id);
+      this.$element.attr('title', this.template.text()).off('.zf.trigger .zf.tooltip').removeClass('has-tip top right left').removeAttr('aria-describedby aria-haspopup data-disable-hover data-resize data-toggle data-tooltip data-yeti-box');
+
+      this.template.remove();
     }
   }]);
 
-  return Reveal;
-}(__WEBPACK_IMPORTED_MODULE_4__foundation_plugin__["a" /* Plugin */]);
+  return Tooltip;
+}(__WEBPACK_IMPORTED_MODULE_4__foundation_positionable__["a" /* Positionable */]);
 
-Reveal.defaults = {
+Tooltip.defaults = {
+  disableForTouch: false,
   /**
-   * Motion-UI class to use for animated elements. If none used, defaults to simple show/hide.
+   * Time, in ms, before a tooltip should open on hover.
+   * @option
+   * @type {number}
+   * @default 200
+   */
+  hoverDelay: 200,
+  /**
+   * Time, in ms, a tooltip should take to fade into view.
+   * @option
+   * @type {number}
+   * @default 150
+   */
+  fadeInDuration: 150,
+  /**
+   * Time, in ms, a tooltip should take to fade out of view.
+   * @option
+   * @type {number}
+   * @default 150
+   */
+  fadeOutDuration: 150,
+  /**
+   * Disables hover events from opening the tooltip if set to true
+   * @option
+   * @type {boolean}
+   * @default false
+   */
+  disableHover: false,
+  /**
+   * Optional addtional classes to apply to the tooltip template on init.
    * @option
    * @type {string}
    * @default ''
    */
-  animationIn: '',
+  templateClasses: '',
   /**
-   * Motion-UI class to use for animated elements. If none used, defaults to simple show/hide.
+   * Non-optional class added to tooltip templates. Foundation default is 'tooltip'.
+   * @option
+   * @type {string}
+   * @default 'tooltip'
+   */
+  tooltipClass: 'tooltip',
+  /**
+   * Class applied to the tooltip anchor element.
+   * @option
+   * @type {string}
+   * @default 'has-tip'
+   */
+  triggerClass: 'has-tip',
+  /**
+   * Minimum breakpoint size at which to open the tooltip.
+   * @option
+   * @type {string}
+   * @default 'small'
+   */
+  showOn: 'small',
+  /**
+   * Custom template to be used to generate markup for tooltip.
    * @option
    * @type {string}
    * @default ''
    */
-  animationOut: '',
+  template: '',
   /**
-   * Time, in ms, to delay the opening of a modal after a click if no animation used.
+   * Text displayed in the tooltip template on open.
+   * @option
+   * @type {string}
+   * @default ''
+   */
+  tipText: '',
+  touchCloseText: 'Tap to close.',
+  /**
+   * Allows the tooltip to remain open if triggered with a click or touch event.
+   * @option
+   * @type {boolean}
+   * @default true
+   */
+  clickOpen: true,
+  /**
+   * DEPRECATED Additional positioning classes, set by the JS
+   * @option
+   * @type {string}
+   * @default ''
+   */
+  positionClass: '',
+  /**
+   * Position of tooltip. Can be left, right, bottom, top, or auto.
+   * @option
+   * @type {string}
+   * @default 'auto'
+   */
+  position: 'auto',
+  /**
+   * Alignment of tooltip relative to anchor. Can be left, right, bottom, top, center, or auto.
+   * @option
+   * @type {string}
+   * @default 'auto'
+   */
+  alignment: 'auto',
+  /**
+   * Allow overlap of container/window. If false, tooltip will first try to
+   * position as defined by data-position and data-alignment, but reposition if
+   * it would cause an overflow.  @option
+   * @type {boolean}
+   * @default false
+   */
+  allowOverlap: false,
+  /**
+   * Allow overlap of only the bottom of the container. This is the most common
+   * behavior for dropdowns, allowing the dropdown to extend the bottom of the
+   * screen but not otherwise influence or break out of the container.
+   * Less common for tooltips.
+   * @option
+   * @type {boolean}
+   * @default false
+   */
+  allowBottomOverlap: false,
+  /**
+   * Distance, in pixels, the template should push away from the anchor on the Y axis.
    * @option
    * @type {number}
    * @default 0
    */
-  showDelay: 0,
+  vOffset: 0,
   /**
-   * Time, in ms, to delay the closing of a modal after a click if no animation used.
+   * Distance, in pixels, the template should push away from the anchor on the X axis
    * @option
    * @type {number}
    * @default 0
    */
-  hideDelay: 0,
+  hOffset: 0,
   /**
-   * Allows a click on the body/overlay to close the modal.
-   * @option
-   * @type {boolean}
-   * @default true
-   */
-  closeOnClick: true,
-  /**
-   * Allows the modal to close if the user presses the `ESCAPE` key.
-   * @option
-   * @type {boolean}
-   * @default true
-   */
-  closeOnEsc: true,
-  /**
-   * If true, allows multiple modals to be displayed at once.
-   * @option
-   * @type {boolean}
-   * @default false
-   */
-  multipleOpened: false,
-  /**
-   * Distance, in pixels, the modal should push down from the top of the screen.
-   * @option
-   * @type {number|string}
-   * @default auto
-   */
-  vOffset: 'auto',
-  /**
-   * Distance, in pixels, the modal should push in from the side of the screen.
-   * @option
-   * @type {number|string}
-   * @default auto
-   */
-  hOffset: 'auto',
-  /**
-   * Allows the modal to be fullscreen, completely blocking out the rest of the view. JS checks for this as well.
-   * @option
-   * @type {boolean}
-   * @default false
-   */
-  fullScreen: false,
-  /**
-   * Percentage of screen height the modal should push up from the bottom of the view.
+   * Distance, in pixels, the template spacing auto-adjust for a vertical tooltip
    * @option
    * @type {number}
-   * @default 10
+   * @default 14
    */
-  btmOffsetPct: 10,
+  tooltipHeight: 14,
   /**
-   * Allows the modal to generate an overlay div, which will cover the view when modal opens.
+   * Distance, in pixels, the template spacing auto-adjust for a horizontal tooltip
    * @option
-   * @type {boolean}
-   * @default true
+   * @type {number}
+   * @default 12
    */
-  overlay: true,
+  tooltipWidth: 12,
   /**
-   * Allows the modal to remove and reinject markup on close. Should be true if using video elements w/o using provider's api, otherwise, videos will continue to play in the background.
-   * @option
-   * @type {boolean}
-   * @default false
-   */
-  resetOnClose: false,
-  /**
-   * Allows the modal to alter the url on open/close, and allows the use of the `back` button to close modals. ALSO, allows a modal to auto-maniacally open on page load IF the hash === the modal's user-set id.
-   * @option
-   * @type {boolean}
-   * @default false
-   */
-  deepLink: false,
-  /**
-   * Update the browser history with the open modal
-   * @option
-   * @default false
-   */
-  updateHistory: false,
-  /**
-  * Allows the modal to append to custom div.
+  * Allow HTML in tooltip. Warning: If you are loading user-generated content into tooltips,
+  * allowing HTML may open yourself up to XSS attacks.
   * @option
-  * @type {string}
-  * @default "body"
+  * @type {boolean}
+  * @default false
   */
-  appendTo: "body",
-  /**
-   * Allows adding additional class names to the reveal overlay.
-   * @option
-   * @type {string}
-   * @default ''
-   */
-  additionalOverlayClasses: ''
+  allowHtml: false
 };
 
-function iPhoneSniff() {
-  return (/iP(ad|hone|od).*OS/.test(window.navigator.userAgent)
-  );
-}
-
-function androidSniff() {
-  return (/Android/.test(window.navigator.userAgent)
-  );
-}
-
-function mobileSniff() {
-  return iPhoneSniff() || androidSniff();
-}
+/**
+ * TODO utilize resize event trigger
+ */
 
 
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Plugin; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__foundation_util_core__ = __webpack_require__(1);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Positionable; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__foundation_util_box__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__foundation_plugin__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__foundation_util_core__ = __webpack_require__(1);
 
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 
 
-// Abstract class for providing lifecycle hooks. Expect plugins to define AT LEAST
-// {function} _setup (replaces previous constructor),
-// {function} _destroy (replaces previous destroy)
 
-var Plugin = function () {
-  function Plugin(element, options) {
-    _classCallCheck(this, Plugin);
 
-    this._setup(element, options);
-    var pluginName = getPluginName(this);
-    this.uuid = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__foundation_util_core__["a" /* GetYoDigits */])(6, pluginName);
+var POSITIONS = ['left', 'right', 'top', 'bottom'];
+var VERTICAL_ALIGNMENTS = ['top', 'bottom', 'center'];
+var HORIZONTAL_ALIGNMENTS = ['left', 'right', 'center'];
 
-    if (!this.$element.attr('data-' + pluginName)) {
-      this.$element.attr('data-' + pluginName, this.uuid);
-    }
-    if (!this.$element.data('zfPlugin')) {
-      this.$element.data('zfPlugin', this);
-    }
-    /**
-     * Fires when the plugin has initialized.
-     * @event Plugin#init
-     */
-    this.$element.trigger('init.zf.' + pluginName);
+var ALIGNMENTS = {
+  'left': VERTICAL_ALIGNMENTS,
+  'right': VERTICAL_ALIGNMENTS,
+  'top': HORIZONTAL_ALIGNMENTS,
+  'bottom': HORIZONTAL_ALIGNMENTS
+};
+
+function nextItem(item, array) {
+  var currentIdx = array.indexOf(item);
+  if (currentIdx === array.length - 1) {
+    return array[0];
+  } else {
+    return array[currentIdx + 1];
+  }
+}
+
+var Positionable = function (_Plugin) {
+  _inherits(Positionable, _Plugin);
+
+  function Positionable() {
+    _classCallCheck(this, Positionable);
+
+    return _possibleConstructorReturn(this, (Positionable.__proto__ || Object.getPrototypeOf(Positionable)).apply(this, arguments));
   }
 
-  _createClass(Plugin, [{
-    key: 'destroy',
-    value: function destroy() {
-      this._destroy();
-      var pluginName = getPluginName(this);
-      this.$element.removeAttr('data-' + pluginName).removeData('zfPlugin')
-      /**
-       * Fires when the plugin has been destroyed.
-       * @event Plugin#destroyed
-       */
-      .trigger('destroyed.zf.' + pluginName);
-      for (var prop in this) {
-        this[prop] = null; //clean up script to prep for garbage collection.
+  _createClass(Positionable, [{
+    key: '_init',
+
+    /**
+     * Abstract class encapsulating the tether-like explicit positioning logic
+     * including repositioning based on overlap.
+     * Expects classes to define defaults for vOffset, hOffset, position,
+     * alignment, allowOverlap, and allowBottomOverlap. They can do this by
+     * extending the defaults, or (for now recommended due to the way docs are
+     * generated) by explicitly declaring them.
+     *
+     **/
+
+    value: function _init() {
+      this.triedPositions = {};
+      this.position = this.options.position === 'auto' ? this._getDefaultPosition() : this.options.position;
+      this.alignment = this.options.alignment === 'auto' ? this._getDefaultAlignment() : this.options.alignment;
+    }
+  }, {
+    key: '_getDefaultPosition',
+    value: function _getDefaultPosition() {
+      return 'bottom';
+    }
+  }, {
+    key: '_getDefaultAlignment',
+    value: function _getDefaultAlignment() {
+      switch (this.position) {
+        case 'bottom':
+        case 'top':
+          return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__foundation_util_core__["b" /* rtl */])() ? 'right' : 'left';
+        case 'left':
+        case 'right':
+          return 'bottom';
+      }
+    }
+
+    /**
+     * Adjusts the positionable possible positions by iterating through alignments
+     * and positions.
+     * @function
+     * @private
+     */
+
+  }, {
+    key: '_reposition',
+    value: function _reposition() {
+      if (this._alignmentsExhausted(this.position)) {
+        this.position = nextItem(this.position, POSITIONS);
+        this.alignment = ALIGNMENTS[this.position][0];
+      } else {
+        this._realign();
+      }
+    }
+
+    /**
+     * Adjusts the dropdown pane possible positions by iterating through alignments
+     * on the current position.
+     * @function
+     * @private
+     */
+
+  }, {
+    key: '_realign',
+    value: function _realign() {
+      this._addTriedPosition(this.position, this.alignment);
+      this.alignment = nextItem(this.alignment, ALIGNMENTS[this.position]);
+    }
+  }, {
+    key: '_addTriedPosition',
+    value: function _addTriedPosition(position, alignment) {
+      this.triedPositions[position] = this.triedPositions[position] || [];
+      this.triedPositions[position].push(alignment);
+    }
+  }, {
+    key: '_positionsExhausted',
+    value: function _positionsExhausted() {
+      var isExhausted = true;
+      for (var i = 0; i < POSITIONS.length; i++) {
+        isExhausted = isExhausted && this._alignmentsExhausted(POSITIONS[i]);
+      }
+      return isExhausted;
+    }
+  }, {
+    key: '_alignmentsExhausted',
+    value: function _alignmentsExhausted(position) {
+      return this.triedPositions[position] && this.triedPositions[position].length == ALIGNMENTS[position].length;
+    }
+
+    // When we're trying to center, we don't want to apply offset that's going to
+    // take us just off center, so wrap around to return 0 for the appropriate
+    // offset in those alignments.  TODO: Figure out if we want to make this
+    // configurable behavior... it feels more intuitive, especially for tooltips, but
+    // it's possible someone might actually want to start from center and then nudge
+    // slightly off.
+
+  }, {
+    key: '_getVOffset',
+    value: function _getVOffset() {
+      return this.options.vOffset;
+    }
+  }, {
+    key: '_getHOffset',
+    value: function _getHOffset() {
+      return this.options.hOffset;
+    }
+  }, {
+    key: '_setPosition',
+    value: function _setPosition($anchor, $element, $parent) {
+      if ($anchor.attr('aria-expanded') === 'false') {
+        return false;
+      }
+      var $eleDims = __WEBPACK_IMPORTED_MODULE_0__foundation_util_box__["a" /* Box */].GetDimensions($element),
+          $anchorDims = __WEBPACK_IMPORTED_MODULE_0__foundation_util_box__["a" /* Box */].GetDimensions($anchor);
+
+      $element.offset(__WEBPACK_IMPORTED_MODULE_0__foundation_util_box__["a" /* Box */].GetExplicitOffsets($element, $anchor, this.position, this.alignment, this._getVOffset(), this._getHOffset()));
+
+      if (!this.options.allowOverlap) {
+        var overlaps = {};
+        var minOverlap = 100000000;
+        // default coordinates to how we start, in case we can't figure out better
+        var minCoordinates = { position: this.position, alignment: this.alignment };
+        while (!this._positionsExhausted()) {
+          var overlap = __WEBPACK_IMPORTED_MODULE_0__foundation_util_box__["a" /* Box */].OverlapArea($element, $parent, false, false, this.options.allowBottomOverlap);
+          if (overlap === 0) {
+            return;
+          }
+
+          if (overlap < minOverlap) {
+            minOverlap = overlap;
+            minCoordinates = { position: this.position, alignment: this.alignment };
+          }
+
+          this._reposition();
+
+          $element.offset(__WEBPACK_IMPORTED_MODULE_0__foundation_util_box__["a" /* Box */].GetExplicitOffsets($element, $anchor, this.position, this.alignment, this._getVOffset(), this._getHOffset()));
+        }
+        // If we get through the entire loop, there was no non-overlapping
+        // position available. Pick the version with least overlap.
+        this.position = minCoordinates.position;
+        this.alignment = minCoordinates.alignment;
+        $element.offset(__WEBPACK_IMPORTED_MODULE_0__foundation_util_box__["a" /* Box */].GetExplicitOffsets($element, $anchor, this.position, this.alignment, this._getVOffset(), this._getHOffset()));
       }
     }
   }]);
 
-  return Plugin;
-}();
+  return Positionable;
+}(__WEBPACK_IMPORTED_MODULE_1__foundation_plugin__["a" /* Plugin */]);
 
-// Convert PascalCase to kebab-case
-// Thank you: http://stackoverflow.com/a/8955580
+Positionable.defaults = {
+  /**
+   * Position of positionable relative to anchor. Can be left, right, bottom, top, or auto.
+   * @option
+   * @type {string}
+   * @default 'auto'
+   */
+  position: 'auto',
+  /**
+   * Alignment of positionable relative to anchor. Can be left, right, bottom, top, center, or auto.
+   * @option
+   * @type {string}
+   * @default 'auto'
+   */
+  alignment: 'auto',
+  /**
+   * Allow overlap of container/window. If false, dropdown positionable first
+   * try to position as defined by data-position and data-alignment, but
+   * reposition if it would cause an overflow.
+   * @option
+   * @type {boolean}
+   * @default false
+   */
+  allowOverlap: false,
+  /**
+   * Allow overlap of only the bottom of the container. This is the most common
+   * behavior for dropdowns, allowing the dropdown to extend the bottom of the
+   * screen but not otherwise influence or break out of the container.
+   * @option
+   * @type {boolean}
+   * @default true
+   */
+  allowBottomOverlap: true,
+  /**
+   * Number of pixels the positionable should be separated vertically from anchor
+   * @option
+   * @type {number}
+   * @default 0
+   */
+  vOffset: 0,
+  /**
+   * Number of pixels the positionable should be separated horizontally from anchor
+   * @option
+   * @type {number}
+   * @default 0
+   */
+  hOffset: 0
+};
 
 
-function hyphenate(str) {
-  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Box; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__foundation_util_core__ = __webpack_require__(1);
+
+
+
+
+var Box = {
+  ImNotTouchingYou: ImNotTouchingYou,
+  OverlapArea: OverlapArea,
+  GetDimensions: GetDimensions,
+  GetOffsets: GetOffsets,
+  GetExplicitOffsets: GetExplicitOffsets
+};
+
+/**
+ * Compares the dimensions of an element to a container and determines collision events with container.
+ * @function
+ * @param {jQuery} element - jQuery object to test for collisions.
+ * @param {jQuery} parent - jQuery object to use as bounding container.
+ * @param {Boolean} lrOnly - set to true to check left and right values only.
+ * @param {Boolean} tbOnly - set to true to check top and bottom values only.
+ * @default if no parent object passed, detects collisions with `window`.
+ * @returns {Boolean} - true if collision free, false if a collision in any direction.
+ */
+function ImNotTouchingYou(element, parent, lrOnly, tbOnly, ignoreBottom) {
+  return OverlapArea(element, parent, lrOnly, tbOnly, ignoreBottom) === 0;
+};
+
+function OverlapArea(element, parent, lrOnly, tbOnly, ignoreBottom) {
+  var eleDims = GetDimensions(element),
+      topOver,
+      bottomOver,
+      leftOver,
+      rightOver;
+  if (parent) {
+    var parDims = GetDimensions(parent);
+
+    bottomOver = parDims.height + parDims.offset.top - (eleDims.offset.top + eleDims.height);
+    topOver = eleDims.offset.top - parDims.offset.top;
+    leftOver = eleDims.offset.left - parDims.offset.left;
+    rightOver = parDims.width + parDims.offset.left - (eleDims.offset.left + eleDims.width);
+  } else {
+    bottomOver = eleDims.windowDims.height + eleDims.windowDims.offset.top - (eleDims.offset.top + eleDims.height);
+    topOver = eleDims.offset.top - eleDims.windowDims.offset.top;
+    leftOver = eleDims.offset.left - eleDims.windowDims.offset.left;
+    rightOver = eleDims.windowDims.width - (eleDims.offset.left + eleDims.width);
+  }
+
+  bottomOver = ignoreBottom ? 0 : Math.min(bottomOver, 0);
+  topOver = Math.min(topOver, 0);
+  leftOver = Math.min(leftOver, 0);
+  rightOver = Math.min(rightOver, 0);
+
+  if (lrOnly) {
+    return leftOver + rightOver;
+  }
+  if (tbOnly) {
+    return topOver + bottomOver;
+  }
+
+  // use sum of squares b/c we care about overlap area.
+  return Math.sqrt(topOver * topOver + bottomOver * bottomOver + leftOver * leftOver + rightOver * rightOver);
 }
 
-function getPluginName(obj) {
-  if (typeof obj.constructor.name !== 'undefined') {
-    return hyphenate(obj.constructor.name);
-  } else {
-    return hyphenate(obj.className);
+/**
+ * Uses native methods to return an object of dimension values.
+ * @function
+ * @param {jQuery || HTML} element - jQuery object or DOM element for which to get the dimensions. Can be any element other that document or window.
+ * @returns {Object} - nested object of integer pixel values
+ * TODO - if element is window, return only those values.
+ */
+function GetDimensions(elem) {
+  elem = elem.length ? elem[0] : elem;
+
+  if (elem === window || elem === document) {
+    throw new Error("I'm sorry, Dave. I'm afraid I can't do that.");
   }
+
+  var rect = elem.getBoundingClientRect(),
+      parRect = elem.parentNode.getBoundingClientRect(),
+      winRect = document.body.getBoundingClientRect(),
+      winY = window.pageYOffset,
+      winX = window.pageXOffset;
+
+  return {
+    width: rect.width,
+    height: rect.height,
+    offset: {
+      top: rect.top + winY,
+      left: rect.left + winX
+    },
+    parentDims: {
+      width: parRect.width,
+      height: parRect.height,
+      offset: {
+        top: parRect.top + winY,
+        left: parRect.left + winX
+      }
+    },
+    windowDims: {
+      width: winRect.width,
+      height: winRect.height,
+      offset: {
+        top: winY,
+        left: winX
+      }
+    }
+  };
+}
+
+/**
+ * Returns an object of top and left integer pixel values for dynamically rendered elements,
+ * such as: Tooltip, Reveal, and Dropdown. Maintained for backwards compatibility, and where
+ * you don't know alignment, but generally from
+ * 6.4 forward you should use GetExplicitOffsets, as GetOffsets conflates position and alignment.
+ * @function
+ * @param {jQuery} element - jQuery object for the element being positioned.
+ * @param {jQuery} anchor - jQuery object for the element's anchor point.
+ * @param {String} position - a string relating to the desired position of the element, relative to it's anchor
+ * @param {Number} vOffset - integer pixel value of desired vertical separation between anchor and element.
+ * @param {Number} hOffset - integer pixel value of desired horizontal separation between anchor and element.
+ * @param {Boolean} isOverflow - if a collision event is detected, sets to true to default the element to full width - any desired offset.
+ * TODO alter/rewrite to work with `em` values as well/instead of pixels
+ */
+function GetOffsets(element, anchor, position, vOffset, hOffset, isOverflow) {
+  console.log("NOTE: GetOffsets is deprecated in favor of GetExplicitOffsets and will be removed in 6.5");
+  switch (position) {
+    case 'top':
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__foundation_util_core__["b" /* rtl */])() ? GetExplicitOffsets(element, anchor, 'top', 'left', vOffset, hOffset, isOverflow) : GetExplicitOffsets(element, anchor, 'top', 'right', vOffset, hOffset, isOverflow);
+    case 'bottom':
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__foundation_util_core__["b" /* rtl */])() ? GetExplicitOffsets(element, anchor, 'bottom', 'left', vOffset, hOffset, isOverflow) : GetExplicitOffsets(element, anchor, 'bottom', 'right', vOffset, hOffset, isOverflow);
+    case 'center top':
+      return GetExplicitOffsets(element, anchor, 'top', 'center', vOffset, hOffset, isOverflow);
+    case 'center bottom':
+      return GetExplicitOffsets(element, anchor, 'bottom', 'center', vOffset, hOffset, isOverflow);
+    case 'center left':
+      return GetExplicitOffsets(element, anchor, 'left', 'center', vOffset, hOffset, isOverflow);
+    case 'center right':
+      return GetExplicitOffsets(element, anchor, 'right', 'center', vOffset, hOffset, isOverflow);
+    case 'left bottom':
+      return GetExplicitOffsets(element, anchor, 'bottom', 'left', vOffset, hOffset, isOverflow);
+    case 'right bottom':
+      return GetExplicitOffsets(element, anchor, 'bottom', 'right', vOffset, hOffset, isOverflow);
+    // Backwards compatibility... this along with the reveal and reveal full
+    // classes are the only ones that didn't reference anchor
+    case 'center':
+      return {
+        left: $eleDims.windowDims.offset.left + $eleDims.windowDims.width / 2 - $eleDims.width / 2 + hOffset,
+        top: $eleDims.windowDims.offset.top + $eleDims.windowDims.height / 2 - ($eleDims.height / 2 + vOffset)
+      };
+    case 'reveal':
+      return {
+        left: ($eleDims.windowDims.width - $eleDims.width) / 2 + hOffset,
+        top: $eleDims.windowDims.offset.top + vOffset
+      };
+    case 'reveal full':
+      return {
+        left: $eleDims.windowDims.offset.left,
+        top: $eleDims.windowDims.offset.top
+      };
+      break;
+    default:
+      return {
+        left: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__foundation_util_core__["b" /* rtl */])() ? $anchorDims.offset.left - $eleDims.width + $anchorDims.width - hOffset : $anchorDims.offset.left + hOffset,
+        top: $anchorDims.offset.top + $anchorDims.height + vOffset
+      };
+
+  }
+}
+
+function GetExplicitOffsets(element, anchor, position, alignment, vOffset, hOffset, isOverflow) {
+  var $eleDims = GetDimensions(element),
+      $anchorDims = anchor ? GetDimensions(anchor) : null;
+
+  var topVal, leftVal;
+
+  // set position related attribute
+
+  switch (position) {
+    case 'top':
+      topVal = $anchorDims.offset.top - ($eleDims.height + vOffset);
+      break;
+    case 'bottom':
+      topVal = $anchorDims.offset.top + $anchorDims.height + vOffset;
+      break;
+    case 'left':
+      leftVal = $anchorDims.offset.left - ($eleDims.width + hOffset);
+      break;
+    case 'right':
+      leftVal = $anchorDims.offset.left + $anchorDims.width + hOffset;
+      break;
+  }
+
+  // set alignment related attribute
+  switch (position) {
+    case 'top':
+    case 'bottom':
+      switch (alignment) {
+        case 'left':
+          leftVal = $anchorDims.offset.left + hOffset;
+          break;
+        case 'right':
+          leftVal = $anchorDims.offset.left - $eleDims.width + $anchorDims.width - hOffset;
+          break;
+        case 'center':
+          leftVal = isOverflow ? hOffset : $anchorDims.offset.left + $anchorDims.width / 2 - $eleDims.width / 2 + hOffset;
+          break;
+      }
+      break;
+    case 'right':
+    case 'left':
+      switch (alignment) {
+        case 'bottom':
+          topVal = $anchorDims.offset.top - vOffset + $anchorDims.height - $eleDims.height;
+          break;
+        case 'top':
+          topVal = $anchorDims.offset.top + vOffset;
+          break;
+        case 'center':
+          topVal = $anchorDims.offset.top + vOffset + $anchorDims.height / 2 - $eleDims.height / 2;
+          break;
+      }
+      break;
+  }
+  return { top: topVal, left: leftVal };
 }
 
 
 
 /***/ }),
-/* 8 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1952,7 +3110,7 @@ var Keyboard = {
       cmds = commandList; // use plain list
     } else {
       // merge ltr and rtl: if document is rtl, rtl overwrites ltr and vice versa
-      if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__foundation_util_core__["c" /* rtl */])()) cmds = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.extend({}, commandList.ltr, commandList.rtl);else cmds = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.extend({}, commandList.rtl, commandList.ltr);
+      if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__foundation_util_core__["b" /* rtl */])()) cmds = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.extend({}, commandList.ltr, commandList.rtl);else cmds = __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.extend({}, commandList.rtl, commandList.ltr);
     }
     command = cmds[keyCode];
 
@@ -2037,17 +3195,188 @@ function getKeyCodes(kcs) {
 
 
 /***/ }),
-/* 9 */
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Touch; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+//**************************************************
+//**Work inspired by multiple jquery swipe plugins**
+//**Done by Yohai Ararat ***************************
+//**************************************************
+
+
+
+var Touch = {};
+
+var startPosX,
+    startPosY,
+    startTime,
+    elapsedTime,
+    isMoving = false;
+
+function onTouchEnd() {
+  //  alert(this);
+  this.removeEventListener('touchmove', onTouchMove);
+  this.removeEventListener('touchend', onTouchEnd);
+  isMoving = false;
+}
+
+function onTouchMove(e) {
+  if (__WEBPACK_IMPORTED_MODULE_0_jquery___default.a.spotSwipe.preventDefault) {
+    e.preventDefault();
+  }
+  if (isMoving) {
+    var x = e.touches[0].pageX;
+    var y = e.touches[0].pageY;
+    var dx = startPosX - x;
+    var dy = startPosY - y;
+    var dir;
+    elapsedTime = new Date().getTime() - startTime;
+    if (Math.abs(dx) >= __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.spotSwipe.moveThreshold && elapsedTime <= __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.spotSwipe.timeThreshold) {
+      dir = dx > 0 ? 'left' : 'right';
+    }
+    // else if(Math.abs(dy) >= $.spotSwipe.moveThreshold && elapsedTime <= $.spotSwipe.timeThreshold) {
+    //   dir = dy > 0 ? 'down' : 'up';
+    // }
+    if (dir) {
+      e.preventDefault();
+      onTouchEnd.call(this);
+      __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this).trigger('swipe', dir).trigger('swipe' + dir);
+    }
+  }
+}
+
+function onTouchStart(e) {
+  if (e.touches.length == 1) {
+    startPosX = e.touches[0].pageX;
+    startPosY = e.touches[0].pageY;
+    isMoving = true;
+    startTime = new Date().getTime();
+    this.addEventListener('touchmove', onTouchMove, false);
+    this.addEventListener('touchend', onTouchEnd, false);
+  }
+}
+
+function init() {
+  this.addEventListener && this.addEventListener('touchstart', onTouchStart, false);
+}
+
+function teardown() {
+  this.removeEventListener('touchstart', onTouchStart);
+}
+
+var SpotSwipe = function () {
+  function SpotSwipe($) {
+    _classCallCheck(this, SpotSwipe);
+
+    this.version = '1.0.0';
+    this.enabled = 'ontouchstart' in document.documentElement;
+    this.preventDefault = false;
+    this.moveThreshold = 75;
+    this.timeThreshold = 200;
+    this.$ = $;
+    this._init();
+  }
+
+  _createClass(SpotSwipe, [{
+    key: '_init',
+    value: function _init() {
+      var $ = this.$;
+      $.event.special.swipe = { setup: init };
+
+      $.each(['left', 'up', 'down', 'right'], function () {
+        $.event.special['swipe' + this] = { setup: function () {
+            $(this).on('swipe', $.noop);
+          } };
+      });
+    }
+  }]);
+
+  return SpotSwipe;
+}();
+
+/****************************************************
+ * As far as I can tell, both setupSpotSwipe and    *
+ * setupTouchHandler should be idempotent,          *
+ * because they directly replace functions &        *
+ * values, and do not add event handlers directly.  *
+ ****************************************************/
+
+Touch.setupSpotSwipe = function ($) {
+  $.spotSwipe = new SpotSwipe($);
+};
+
+/****************************************************
+ * Method for adding pseudo drag events to elements *
+ ***************************************************/
+Touch.setupTouchHandler = function ($) {
+  $.fn.addTouch = function () {
+    this.each(function (i, el) {
+      $(el).bind('touchstart touchmove touchend touchcancel', function () {
+        //we pass the original event object because the jQuery event
+        //object is normalized to w3c specs and does not provide the TouchList
+        handleTouch(event);
+      });
+    });
+
+    var handleTouch = function (event) {
+      var touches = event.changedTouches,
+          first = touches[0],
+          eventTypes = {
+        touchstart: 'mousedown',
+        touchmove: 'mousemove',
+        touchend: 'mouseup'
+      },
+          type = eventTypes[event.type],
+          simulatedEvent;
+
+      if ('MouseEvent' in window && typeof window.MouseEvent === 'function') {
+        simulatedEvent = new window.MouseEvent(type, {
+          'bubbles': true,
+          'cancelable': true,
+          'screenX': first.screenX,
+          'screenY': first.screenY,
+          'clientX': first.clientX,
+          'clientY': first.clientY
+        });
+      } else {
+        simulatedEvent = document.createEvent('MouseEvent');
+        simulatedEvent.initMouseEvent(type, true, true, window, 1, first.screenX, first.screenY, first.clientX, first.clientY, false, false, false, false, 0 /*left*/, null);
+      }
+      first.target.dispatchEvent(simulatedEvent);
+    };
+  };
+};
+
+Touch.init = function ($) {
+  if (typeof $.spotSwipe === 'undefined') {
+    Touch.setupSpotSwipe($);
+    Touch.setupTouchHandler($);
+  }
+};
+
+
+
+/***/ }),
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_core__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_core__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_util_mediaQuery__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_util_triggers__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_reveal__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_slider__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_tooltip__ = __webpack_require__(8);
 
 
 __WEBPACK_IMPORTED_MODULE_1__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_core__["a" /* Foundation */].addToJquery(__WEBPACK_IMPORTED_MODULE_0_jquery___default.a);
@@ -2056,7 +3385,9 @@ __WEBPACK_IMPORTED_MODULE_1__home_deployer_sites_node_foundation_customizer_node
 
 __WEBPACK_IMPORTED_MODULE_3__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_util_triggers__["a" /* Triggers */].init(__WEBPACK_IMPORTED_MODULE_0_jquery___default.a, __WEBPACK_IMPORTED_MODULE_1__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_core__["a" /* Foundation */]);
 
-__WEBPACK_IMPORTED_MODULE_1__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_core__["a" /* Foundation */].plugin(__WEBPACK_IMPORTED_MODULE_4__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_reveal__["a" /* Reveal */], 'Reveal');
+__WEBPACK_IMPORTED_MODULE_1__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_core__["a" /* Foundation */].plugin(__WEBPACK_IMPORTED_MODULE_4__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_slider__["a" /* Slider */], 'Slider');
+
+__WEBPACK_IMPORTED_MODULE_1__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_core__["a" /* Foundation */].plugin(__WEBPACK_IMPORTED_MODULE_5__home_deployer_sites_node_foundation_customizer_node_foundation_customizer_foundation_sites_js_foundation_tooltip__["a" /* Tooltip */], 'Tooltip');
 
 /***/ })
 /******/ ]);
