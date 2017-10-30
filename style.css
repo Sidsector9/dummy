@@ -47,3 +47,52 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 
 /*font-family: 'Montserrat', sans-serif;*/
 /*font-family: 'Raleway', sans-serif;*/
+
+html {
+	font-size: 14px;
+}
+
+body {
+	font-family: 'Montserrat', sans-serif;
+	font-size: 1rem;
+	color: #545454;
+}
+
+.site-header {
+	background-color: #e5e5e5;
+	padding: 16px 0;
+}
+
+.main-navigation {
+	font-family: 'Raleway', sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+.main-navigation a {
+	color: #8e8e8e;
+	padding: 0 17px;
+	transition: color 0.3s ease;
+}
+
+.main-navigation li:hover a {
+	display: block;
+	color: #005697;
+	transition: color 0.3s ease;
+}
+
+.main-navigation ul {
+	margin: 0;
+	padding;
+	list-style: none;
+}
+
+.main-navigation ul:after {
+	display: block;
+	content: '';
+	clear: both;
+}
+
+.main-navigation ul li {
+	float: left;
+}
