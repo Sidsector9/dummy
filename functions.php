@@ -158,3 +158,18 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+require_once get_template_directory() . '/cpt-templates/single-speakers.php';
+
+function create_post_type() {
+  register_post_type( 'speakers',
+    array(
+      'labels' => array(
+        'name' => __( 'Speakers' ),
+        'singular_name' => __( 'Product' )
+      ),
+      'public' => true,
+      'has_archive' => true,
+    )
+  );
+}
+add_action( 'init', 'create_post_type' );

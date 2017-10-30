@@ -58,15 +58,26 @@ body {
 	color: #545454;
 }
 
+.admin-bar .site-header {
+	margin-top: 32px;
+}
+
 .site-header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 999;
 	background-color: #e5e5e5;
 	padding: 16px 0;
 }
 
 .main-navigation {
 	font-family: 'Raleway', sans-serif;
+	font-weight: 800;
 	text-transform: uppercase;
 	letter-spacing: 2px;
+	margin-top: 10px;
 }
 
 .main-navigation a {
@@ -85,6 +96,7 @@ body {
 	margin: 0;
 	padding;
 	list-style: none;
+	float: right;
 }
 
 .main-navigation ul:after {
@@ -95,4 +107,40 @@ body {
 
 .main-navigation ul li {
 	float: left;
+}
+
+.admin-bar .site-content {
+	margin-top: 115px;
+}
+
+.site-content {
+	margin-top: 115px;
+    padding: 2.25rem 0;
+}
+
+/*## Post, Page, Widget titles */
+.entry-title,
+.widget-title {
+	font-family: 'Raleway', sans-serif;
+	font-weight: 600;
+	font-size: 22px;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	color: #454545;
+}
+
+.entry-title a {
+	color: #454545;
+}
+
+/*## Footer */
+.site-footer {
+	background-color: #161616;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 13px;
+	padding: 27px 0;
+}
+
+.site-footer a {
+	color: #5b5b5b;
 }
