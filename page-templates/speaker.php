@@ -20,15 +20,21 @@ if ( $speaker_query->have_postS() ) :
 		$speaker_query->the_post();
 ?>
 
-	<div class="column large-4 medium-6 small-12">
+	<div class="column large-4 medium-6 small-12 end">
 		<div class="speaker-box">
 			<?php the_post_thumbnail(); ?>
-			<?php the_title(); ?>
+			<div class="speaker-name">
+				<?php the_title(); ?>
+			</div>
+
+			<div class="company">
 			<?php
 			$sessions_group = get_post_meta( get_the_ID(), 'sessions_group', true );
 			echo esc_html( $sessions_group['company'] );
 			?>
-			<a href="<?php the_permalink(); ?>"><?php echo esc_html__( 'View Profile', 'thekeynote' ); ?></a>
+			</div>
+
+			<a class="view-more-link" href="<?php the_permalink(); ?>"><?php echo esc_html__( 'View Profile', 'thekeynote' ); ?></a>
 		</div>
 	</div>
 

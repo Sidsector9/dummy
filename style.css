@@ -49,7 +49,7 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 /*font-family: 'Raleway', sans-serif;*/
 
 html {
-	font-size: 14px;
+	font-size: 16px;
 }
 
 body {
@@ -181,3 +181,24 @@ body {
 }
 
 /* ## Speakers Listing Template */
+.speaker-box .speaker-name {
+	font-family: 'Raleway', sans-serif;
+	font-size: 20px;
+	font-weight: 800;
+	letter-spacing: 4px;
+	text-align: center;
+	text-transform: uppercase;
+	color: #292929;
+}
+
+.speaker-box .company {
+	text-align: center;
+}
+
+.speaker-box .view-more-link {
+	display: inline-block;
+	padding: 18px 20px;
+	color: #fff;
+	background-color: #005697;
+	border-bottom: 3px solid #003972;
+}
