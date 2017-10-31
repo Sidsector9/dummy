@@ -161,4 +161,6 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 /**
  * Custom Post Types
  */
+require_once get_template_directory() . '/custom-post-types/cpt-sessions.php';
 require_once get_template_directory() . '/custom-post-types/cpt-speakers.php';
+// require_once get_template_directory() . '/cpt-templates/single-speaker.php';

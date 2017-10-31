@@ -115,10 +115,10 @@ body {
 
 .site-content {
 	margin-top: 115px;
-    padding: 2.25rem 0;
+    padding: 4rem 0;
 }
 
-/*## Post, Page, Widget titles */
+/* ## Post, Page, Widget titles */
 .entry-title,
 .widget-title {
 	font-family: 'Raleway', sans-serif;
@@ -133,7 +133,7 @@ body {
 	color: #454545;
 }
 
-/*## Footer */
+/* ## Footer */
 .site-footer {
 	background-color: #161616;
 	font-family: 'Montserrat', sans-serif;
@@ -144,3 +144,40 @@ body {
 .site-footer a {
 	color: #5b5b5b;
 }
+
+/* ## single-speaker.php */
+.single-speaker .blue-title {
+	padding: 2rem 0;
+	font-family: 'Raleway', sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #fff;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	text-align: center;
+	background-color: #005697;
+	border-bottom: 3px solid #2e69d5;
+}
+
+.single-speaker .bio {
+	font-family: 'Raleway', sans-serif;
+    font-size: 23px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.single-speaker .speaker-image {
+	margin-bottom: 2rem;
+}
+
+.single-speaker .meta-after-image {
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
+	font-size: 13px;
+	margin-bottom: 2rem;
+	color: #545454;
+}
+
+/* ## Speakers Listing Template */

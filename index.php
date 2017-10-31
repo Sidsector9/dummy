@@ -14,6 +14,7 @@
 
 get_header(); ?>
 
+<div class="row">
 	<div id="primary" class="content-area column large-8">
 		<main id="main" class="site-main">
 
@@ -50,6 +51,7 @@ get_header(); ?>
 
 		</main><!-- #main -->
 	</div><!-- #primary -->
+</div>
 
 <?php
 get_sidebar();

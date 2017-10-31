@@ -18,7 +18,7 @@
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 
 	<link href="https://fonts.googleapis.com/css?family=Raleway:600,800" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
 
 	<?php wp_head(); ?>
 </head>
@@ -46,4 +46,3 @@
 	</header><!-- #masthead -->
 
 	<div id="content" class="site-content">
-		<div class="row">
