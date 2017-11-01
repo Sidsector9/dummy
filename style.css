@@ -181,7 +181,17 @@ body {
 }
 
 /* ## Speakers Listing Template */
+.speaker-box {
+	margin-bottom: 5rem;
+}
+
+.speaker-box img {
+	display: block;
+	margin: 0 auto;
+}
+
 .speaker-box .speaker-name {
+	margin-top: 2rem;
 	font-family: 'Raleway', sans-serif;
 	font-size: 20px;
 	font-weight: 800;
@@ -192,11 +202,16 @@ body {
 }
 
 .speaker-box .company {
+	margin-top: 1rem;
 	text-align: center;
 }
 
 .speaker-box .view-more-link {
-	display: inline-block;
+	display: block;
+	margin: 0 auto;
+	margin-top: 3rem;
+	max-width: 135px;
+	text-align: center;
 	padding: 18px 20px;
 	color: #fff;
 	background-color: #005697;

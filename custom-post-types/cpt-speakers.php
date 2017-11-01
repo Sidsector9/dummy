@@ -11,9 +11,11 @@ function thekeynote_speakers_cpt() {
 				'name'          => __( 'Speakers' ),
 				'singular_name' => __( 'speaker' ),
 			),
-			'public'      => true,
-			'has_archive' => true,
-			'supports'    => array( 'title', 'thumbnail', 'editor' ),
+			'public'       => true,
+			'has_archive'  => true,
+			'hierarchical' => true,
+			'orderby'      => 'menu_order',
+			'supports'     => array( 'title', 'thumbnail', 'editor', 'page-attributes' ),
 		)
 	);
 }
