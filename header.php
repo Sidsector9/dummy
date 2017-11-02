@@ -29,13 +29,13 @@
 <div id="page" class="site">
 	<header id="masthead" class="site-header">
 		<div class="row">
-			<div class="site-branding large-3 column">
-				<a href="<?php echo esc_url( home_url( '/' ) )?>">
-					<img src="<?php echo( get_header_image() ); ?>" alt="<?php echo( get_bloginfo( 'title' ) ); ?>" />
+			<div class="site-branding large-3 small-12 column">
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+					<img src="<?php echo esc_url( get_header_image() ); ?>" alt="<?php echo get_bloginfo( 'title' ); ?>" />
 				</a>
 			</div><!-- .site-branding -->
 
-			<div class="large-9 column">
+			<div class="large-9 small-12 column">
 				<nav id="site-navigation" class="main-navigation">
 				<?php
 					wp_nav_menu( array(
