@@ -35,6 +35,21 @@ function thekeynote_speaker_category() {
 	);
 }
 
+add_action( 'fm_post_session', 'session_timing_field' );
+/**
+ * Session Time Metabox
+ */
+function session_timing_field() {
+	$fm = new Fieldmanager_TextField( array(
+		'name' => 'session_time',
+		'attributes' => array(
+			'size' => '25',
+		),
+	) );
+
+	$fm->add_meta_box( 'Session Time', array( 'session' ) );
+}
+
 add_action( 'fm_post_session', 'sessions_options' );
 /**
  * Creates Sessions Options metabox and adds fields to it.
@@ -58,7 +73,6 @@ function sessions_options() {
 
 			'session_date' => new Fieldmanager_Datepicker( 'Session Date', array(
 				'name' => 'session_date',
-				'use_time' => true,
 			)),
 
 			'session_location' => new Fieldmanager_Textfield( 'Location', array(

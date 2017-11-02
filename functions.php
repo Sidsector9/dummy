@@ -119,6 +119,8 @@ add_action( 'widgets_init', 'thekeynote_widgets_init' );
 function thekeynote_scripts() {
 	wp_enqueue_style( 'thekeynote-foundation-style', get_template_directory_uri() . '/scss/foundation-6/css/foundation.min.css', array(), false, 'all' );
 
+	wp_enqueue_style( 'thekeynote-font-awesome', get_template_directory_uri() . '/scss/font-awesome/font-awesome.min.css', array(), false, 'all' );
+
 	wp_enqueue_style( 'thekeynote-style', get_stylesheet_uri() );
 
 	wp_enqueue_script( 'thekeynote-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
@@ -163,3 +165,65 @@ if ( defined( 'JETPACK__VERSION' ) ) {
  */
 require_once get_template_directory() . '/custom-post-types/cpt-sessions.php';
 require_once get_template_directory() . '/custom-post-types/cpt-speakers.php';
+
+
+add_shortcode( 'sessions', 'thekeynote_sessions' );
+function thekeynote_sessions( $atts, $content ) {
+	$term        = get_term_by( 'slug', 'gic-insights', 'session_category' );
+	$child_terms = get_term_children( $term->term_id, 'session_category' );
+	$session_args  = array(
+		'post_type' => 'session',
+		'meta_key'  => 'session_time',
+		'orderby'   => 'meta_value',
+		'order'     => 'ASC',
+
+		'tax_query' => array(
+			array(
+				'taxonomy' => 'session_category',
+				'field' => 'term_id',
+				// 'terms' => 4,
+			),
+		),
+	);
+
+	// $query = new WP_Query( $session_args );
+
+	// if ( $query->have_posts() ) {
+	// 	while( $query->have_posts() ) {
+	// 		$query->the_post();
+
+	// 		the_title();
+	// 	}
+	// }
+
+
+
+	foreach ( $child_terms as $child_term_id ) {
+		$child_term = get_term_by( 'id', $child_term_id, 'session_category' );
+		echo '<div class="session-container">';
+		echo '<div class="date-title">';
+		echo '<div class="session-date">' . esc_html( $child_term->name ) . '</div>';
+		echo '</div>';
+
+		$session_args['tax_query'][0]['terms'] = $child_term_id;
+		$session_query = new WP_Query( $session_args );
+
+		if ( $session_query->have_posts() ) {
+			while ( $session_query->have_posts() ) {
+				$session_query->the_post();
+				echo '<div class="session-details">';
+				echo '<div class="session-time">';
+				echo esc_html( get_post_meta( get_the_ID(), 'session_time', true ) );
+				echo '</div>';
+				echo '<div class="session-title">';
+				echo the_title();
+				if ( ! empty( get_the_content() ) ) {
+					echo '<div class="read-more-link"><a href="' . get_the_permalink() . '">Read More</a></div>';
+				}
+				echo '</div>';
+				echo '</div>';
+			}
+		}
+		echo '</div>';
+	}
+}

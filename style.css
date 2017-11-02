@@ -217,3 +217,138 @@ body {
 	background-color: #005697;
 	border-bottom: 3px solid #003972;
 }
+
+/* ## single-session.php */
+.single-session .site-content {
+	padding-top: 0;
+}
+
+.single-session .title-with-background h1 {
+	font-family: 'Raleway', sans-serif;
+	font-size: 5vw;
+	font-weight: 800;
+	text-transform: uppercase;
+	color: #fff;
+	padding: 4rem 0;
+	letter-spacing: 5px;
+}
+
+.single-session .title-with-background {
+	margin-bottom: 3rem;
+}
+
+.single-session .session-meta {
+	font-family: 'Montserrat', sans-serif;
+	font-size: 12px;
+	text-align: right;
+	text-transform: uppercase;
+	margin-bottom: 1rem;
+}
+
+.single-session .session-speakers > * {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.single-session i.fa {
+	color: #a3a3a3;
+	font-size: 18px;
+	margin-right: 6px;
+}
+
+/* ## Sessions Listing */
+.page-template-page-templatesno-sidebar-php h1 {
+	font-family: 'Raleway', sans-serif;
+	margin-bottom: 3rem;
+	color: #292929;
+	font-size: 36px;
+	font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: 4px;
+}
+
+.session-container {
+	margin-bottom: 3rem;
+}
+
+.date-title {
+	background-color: #af8d6a;
+}
+.date-title:after {
+	display: block;
+	content: '';
+	clear: both;
+}
+
+.date-title .session-date {
+	float: left;
+	background-color: #005697;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 16px;
+	padding: 13px 20px;
+	min-width: 280px;
+}
+
+.date-title .brown-bar {
+	float: left;
+}
+
+.session-details {
+	position: relative;
+    background-color: #f7f7f7;
+}
+
+.session-details:before {
+	position: absolute;
+	content: '';
+	top: 100%;
+	left: 50px;
+	width: calc( 100% - 100px );
+	border-bottom: 1px solid #dddddd;
+	z-index: 1;
+}
+
+.session-details:last-child:before {
+	border-bottom: none;
+}
+
+.session-details:after {
+	display: block;
+	content: '';
+	clear: both;
+}
+
+.session-details .session-time {
+	float: left;
+	min-width: 280px;
+	padding: 13px 20px;
+	font-size: 22px;
+    font-family: 'Montserrat', sans-serif;
+    padding-left: 40px;
+}
+
+.session-details .session-title {
+	float: left;
+	font-size: 22px;
+    font-weight: 600;
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    line-height: 1.5;
+    padding: 13px 20px;
+    padding-left: 0;
+}
+
+.session-details .session-title .read-more-link {
+    font-size: 16px;
+    text-transform: capitalize;
+    letter-spacing: 0;
+    margin-top: 5px;
+}
+
+.session-details .session-title .read-more-link a {
+    color: #005697;
+}

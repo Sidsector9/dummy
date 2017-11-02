@@ -20,6 +20,8 @@
 	<link href="https://fonts.googleapis.com/css?family=Raleway:600,800" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
 
+	<script src="https://use.fontawesome.com/64ea4760bf.js"></script>
+
 	<?php wp_head(); ?>
 </head>
 
@@ -28,7 +30,9 @@
 	<header id="masthead" class="site-header">
 		<div class="row">
 			<div class="site-branding large-3 column">
-				<img src="<?php echo( get_header_image() ); ?>" alt="<?php echo( get_bloginfo( 'title' ) ); ?>" />
+				<a href="<?php echo esc_url( home_url( '/' ) )?>">
+					<img src="<?php echo( get_header_image() ); ?>" alt="<?php echo( get_bloginfo( 'title' ) ); ?>" />
+				</a>
 			</div><!-- .site-branding -->
 
 			<div class="large-9 column">
