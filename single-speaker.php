@@ -64,10 +64,6 @@ get_header(); ?>
 					$sessions_group = get_post_meta( get_the_ID(), 'sessions_group_session_speakers', true );
 					$sessions_time  = get_post_meta( get_the_ID(), 'sessions_group_session_time', true );
 
-					// echo '<pre>';
-					// print_r($sessions_group);
-					// echo '</pre>';
-
 					if ( in_array( $speaker_id, $sessions_group, true ) ) {
 						echo '<div class="column large-6">';
 						echo '<div class="speaker-session-container">';

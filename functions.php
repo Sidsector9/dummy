@@ -180,7 +180,7 @@ function thekeynote_sessions( $atts, $content ) {
 	$child_terms = get_term_children( $term->term_id, 'session_category' );
 	$session_args  = array(
 		'post_type' => 'session',
-		'meta_key'  => 'session_time',
+		'meta_key'  => 'sessions_group_session_time',
 		'orderby'   => 'meta_value',
 		'order'     => 'ASC',
 
@@ -217,7 +217,7 @@ function thekeynote_sessions( $atts, $content ) {
 				$session_query->the_post();
 				echo '<div class="session-details">';
 				echo '<div class="session-time">';
-				echo esc_html( get_post_meta( get_the_ID(), 'session_time', true ) );
+				echo esc_html( get_post_meta( get_the_ID(), 'sessions_group_session_time', true ) );
 				echo '</div>';
 				echo '<div class="session-title">';
 				echo the_title();
