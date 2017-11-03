@@ -127,6 +127,8 @@ function thekeynote_scripts() {
 
 	wp_enqueue_script( 'thekeynote-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
 
+	wp_enqueue_script( 'thekeynote-script', get_template_directory_uri() . '/js/thekeynote-script.js', array( 'jquery' ), '20151215', true );
+
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
@@ -166,9 +168,14 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 require_once get_template_directory() . '/custom-post-types/cpt-sessions.php';
 require_once get_template_directory() . '/custom-post-types/cpt-speakers.php';
 
-
 add_shortcode( 'sessions', 'thekeynote_sessions' );
 function thekeynote_sessions( $atts, $content ) {
+
+	$atts = shortcode_atts( array(
+		'row'   => 'no',
+		'title' => '',
+	), $atts );
+
 	$term        = get_term_by( 'slug', 'gic-insights', 'session_category' );
 	$child_terms = get_term_children( $term->term_id, 'session_category' );
 	$session_args  = array(
@@ -181,22 +188,19 @@ function thekeynote_sessions( $atts, $content ) {
 			array(
 				'taxonomy' => 'session_category',
 				'field' => 'term_id',
-				// 'terms' => 4,
 			),
 		),
 	);
 
-	// $query = new WP_Query( $session_args );
+	ob_start();
 
-	// if ( $query->have_posts() ) {
-	// 	while( $query->have_posts() ) {
-	// 		$query->the_post();
+	if ( 'yes' === $atts['row'] ) {
+		echo '<div class="row column">';
+	}
 
-	// 		the_title();
-	// 	}
-	// }
-
-
+	if ( ! empty( $atts['title'] ) ) {
+		echo '<h2 class="sessions-shortcode-title">' . esc_html( $atts['title'] ) . '</h2>';
+	}
 
 	foreach ( $child_terms as $child_term_id ) {
 		$child_term = get_term_by( 'id', $child_term_id, 'session_category' );
@@ -226,4 +230,10 @@ function thekeynote_sessions( $atts, $content ) {
 		}
 		echo '</div>';
 	}
+
+	if ( 'yes' === $atts['row'] ) {
+		echo '</div>';
+	}
+
+	return ob_get_clean();
 }

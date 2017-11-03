@@ -62,14 +62,22 @@ body {
 	margin-top: 32px;
 }
 
+.site-branding {
+	position: relative;
+}
+
 .site-header {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	z-index: 999;
-	background-color: #e5e5e5;
+	background-color: #f5f5f5;
 	padding: 16px 0;
+}
+
+.ham-menu {
+	display: none;
 }
 
 .main-navigation {
@@ -146,6 +154,14 @@ body {
 }
 
 /* ## single-speaker.php */
+.single-speaker .site-content {
+    padding-top: 0;
+}
+
+.single-speaker-row {
+	padding-top: 4rem;
+}
+
 .single-speaker .blue-title {
 	padding: 2rem 0;
 	font-family: 'Raleway', sans-serif;
@@ -178,6 +194,46 @@ body {
 	font-size: 13px;
 	margin-bottom: 2rem;
 	color: #545454;
+}
+
+.single-speaker .speaker-session-container {
+	margin-top: 1rem;
+    background-color: #f2f2f2;
+    border-bottom: 3px solid #dfdfdf;
+}
+
+.single-speaker .black-session-title {
+	padding: .5rem 1rem;
+	font-family: 'Raleway', sans-serif;
+	font-size: 13px;
+	background-color: #424242;
+	text-transform: uppercase;
+}
+
+.single-speaker .black-session-title a {
+	color: #fff;
+}
+
+.single-speaker .black-session-title a:hover {
+	color: #fff;
+}
+
+.single-speaker .black-session-time {
+    padding: 1rem;
+}
+
+.single-speaker .black-session-time i {
+	margin-right: 1rem;
+}
+
+.title-with-background h1 {
+	font-family: 'Raleway', sans-serif;
+	font-size: 5vw;
+	font-weight: 800;
+	text-transform: uppercase;
+	color: #fff;
+	padding: 2rem 0;
+	letter-spacing: 5px;
 }
 
 /* ## Speakers Listing Template */
@@ -229,16 +285,6 @@ body {
 /* ## single-session.php */
 .single-session .site-content {
 	padding-top: 0;
-}
-
-.single-session .title-with-background h1 {
-	font-family: 'Raleway', sans-serif;
-	font-size: 5vw;
-	font-weight: 800;
-	text-transform: uppercase;
-	color: #fff;
-	padding: 4rem 0;
-	letter-spacing: 5px;
 }
 
 .single-session .title-with-background {
@@ -370,6 +416,51 @@ body {
     color: #005697;
 }
 
+/* ## Home Page */
+.home .site-content {
+	padding: 0;
+}
+
+.home .blue-box-container {
+    margin-bottom: 3rem;
+    padding: 3rem 0;
+}
+
+.home .blue-box-container h1 {
+	font-family: 'Raleway', sans-serif;
+	font-size: 30px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.home .session-details:last-child {
+	margin-bottom: 3rem;
+}
+
+.home .sessions-shortcode-title {
+	font-family: 'Raleway', sans-serif;
+    margin-bottom: 3rem;
+    color: #292929;
+    font-size: 36px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: 4px;
+}
+
+.home .rt-bg-box {
+	padding: 4rem 0;
+}
+
+.home .rt-bg-box h2 {
+	font-family: 'Montserrat', sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: center;
+	color: #8e8e8e;
+	letter-spacing: 4px;
+}
+
 @media ( max-width: 65rem ) {
 	.site-branding > a {
 		display: block;
@@ -387,5 +478,87 @@ body {
 	.main-navigation ul {
 		display: inline-block;
 		float: none;
+	}
+}
+
+@media ( max-width: 860px ) {
+	.ham-menu {
+		position: absolute;
+		top: 50%;
+		right: .9375rem;
+		transform: translate( 0, -50% );
+		display: block;
+		cursor: pointer;
+		background-color: #005697;
+		padding: 6px;
+	}
+
+	.ham-menu span {
+		display: block;
+		width: 40px;
+		height: 5px;
+		background: #fff;
+		margin-bottom: 6px;
+	}
+
+	.ham-menu span:last-child {
+		margin-bottom: 0;
+	}
+	
+	.main-navigation {
+		display: none;
+		position: absolute;
+		top: 100px;
+		left: 50%;
+		width: 300px;
+		transform: translate( -50%, 0 );
+		background-color: #0a0a0a;
+		text-align: left;
+		text-transform: capitalize;
+		letter-spacing: 0;
+		font-weight: 400;
+	}
+
+	.main-navigation ul {
+		width: 100%;
+	}
+
+	.main-navigation ul li {
+		display: block;
+		float: none;
+		width: 100%;
+	}
+
+	.main-navigation ul li a {
+		display: block;
+		padding: .5rem 1rem;
+		color: #fff;
+		transition: background-color 0.3s ease;
+	}
+
+	.main-navigation ul li:hover a {
+		transition: background-color 0.3s ease;
+		background-color: rgba( 255, 255, 255, 0.1 );
+		color: #fff;
+	}
+}
+
+@media ( max-width: 480px ) {
+	.session-details {
+		display: block;
+	}
+
+	.session-details .session-time {
+		display: block;
+		width: 100%;
+		padding: 15px 15px;
+		padding-bottom: 5px;
+	}
+
+	.session-details .session-title {
+		display: block;
+		width: 100%;
+		padding: 15px 15px;
+		padding-top: 5px;
 	}
 }

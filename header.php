@@ -33,6 +33,11 @@
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
 					<img src="<?php echo esc_url( get_header_image() ); ?>" alt="<?php echo get_bloginfo( 'title' ); ?>" />
 				</a>
+				<div class="ham-menu">
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
 			</div><!-- .site-branding -->
 
 			<div class="large-9 small-12 column">

@@ -45,6 +45,7 @@ add_action( 'fm_post_speaker', 'speakers_options' );
 function speakers_options() {
 	$fm = new Fieldmanager_Group( array(
 		'name' => 'sessions_group',
+		'serialize_data' => false,
 		'children' => array(
 			'speaker_position' => new Fieldmanager_Textfield( 'Speaker Position', array(
 				'attributes' => array(
