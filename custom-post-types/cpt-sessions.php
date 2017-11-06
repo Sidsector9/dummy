@@ -57,7 +57,16 @@ function sessions_options() {
 				),
 			)),
 
+			'demo_cb' => new Fieldmanager_Checkbox( array(
+			        'name' => 'demo_cb',
+			        'label' => 'Checkbox Label',
+			)),
+
 			'session_time' => new Fieldmanager_Textfield( 'Session Time', array(
+				'display_if' => array(
+					'src' => 'demo_cb',
+					'value' => true
+				),
 				'attributes' => array(
 					'size' => 25,
 				),

@@ -121,11 +121,17 @@ function thekeynote_scripts() {
 
 	wp_enqueue_style( 'thekeynote-font-awesome', get_template_directory_uri() . '/scss/font-awesome/font-awesome.min.css', array(), false, 'all' );
 
+	wp_enqueue_style( 'thekeynote-slick-slider-theme-css', get_template_directory_uri() . '/libraries/slick-slider/slick-theme.css', array(), false, 'all' );
+
+	wp_enqueue_style( 'thekeynote-slick-slider-css', get_template_directory_uri() . '/libraries/slick-slider/slick.css', array(), false, 'all' );
+
 	wp_enqueue_style( 'thekeynote-style', get_stylesheet_uri() );
 
 	wp_enqueue_script( 'thekeynote-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
 
 	wp_enqueue_script( 'thekeynote-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
+
+	wp_enqueue_script( 'thekeynote-slick-js', get_template_directory_uri() . '/libraries/slick-slider/slick.min.js', array( 'jquery' ), '20151215', true );
 
 	wp_enqueue_script( 'thekeynote-script', get_template_directory_uri() . '/js/thekeynote-script.js', array( 'jquery' ), '20151215', true );
 
@@ -169,6 +175,12 @@ require_once get_template_directory() . '/custom-post-types/cpt-sessions.php';
 require_once get_template_directory() . '/custom-post-types/cpt-speakers.php';
 
 add_shortcode( 'sessions', 'thekeynote_sessions' );
+/**
+ * Shows sessions as a list.
+ *
+ * @param array $atts    Shortcode attributes.
+ * @param array $content Shortcode content.
+ */
 function thekeynote_sessions( $atts, $content ) {
 
 	$atts = shortcode_atts( array(
@@ -222,7 +234,7 @@ function thekeynote_sessions( $atts, $content ) {
 				echo '<div class="session-title">';
 				echo the_title();
 				if ( ! empty( get_the_content() ) ) {
-					echo '<div class="read-more-link"><a href="' . get_the_permalink() . '">Read More</a></div>';
+					echo '<div class="read-more-link"><a href="' . esc_url( get_the_permalink() ) . '">' . esc_html__( 'Read More', 'thekeynote' ) . '</a></div>';
 				}
 				echo '</div>';
 				echo '</div>';
@@ -236,4 +248,52 @@ function thekeynote_sessions( $atts, $content ) {
 	}
 
 	return ob_get_clean();
+}
+
+add_shortcode( 'homepage_banner', 'thekeynote_banner' );
+/**
+ * Displays image slider or video background.
+ *
+ * @param array $atts    Shortcode attributes.
+ * @param array $content Shortcode content.
+ */
+function thekeynote_banner( $atts, $content ) {
+	ob_start();
+	echo '<div class="banner-container">';
+	echo '<div class="banner-sub-container">';
+	$banner_options = get_option( 'banner_options', array() );
+	$image_or_video = $banner_options['image_or_video'];
+	switch ( $image_or_video ) {
+		case 'image':
+			thekeynote_slider( $banner_options['slider_options'] );
+			break;
+
+		default:
+			break;
+	}
+	echo '</div>';
+	echo '</div>';
+	return ob_get_clean();
+}
+
+/**
+ * Renders the slick slider on banner
+ *
+ * @param array $slider_options Banner options.
+ */
+function thekeynote_slider( $slider_options ) {
+	echo '<div class="banner-slider">';
+	if ( is_array( $slider_options ) && ! empty( $slider_options ) ) {
+		foreach ( $slider_options as $slide ) {
+			$url  = wp_get_attachment_url( $slide['slide_id'] );
+			$text = $slide['slide_text'];
+			$position = $slide['slide_text_position'];
+
+			echo '<div class="image-and-text">';
+			echo '<div class="slide-text ' . esc_attr( $position ) . '">' . esc_html( $text ) . '</div>';
+			echo '<img src="' . esc_url( $url ) . '"/>';
+			echo '</div>';
+		}
+	}
+	echo '</div>';
 }

@@ -562,3 +562,49 @@ body {
 		padding-top: 5px;
 	}
 }
+
+/* ## Banner */
+.banner-container {
+	position: relative;
+	overflow: hidden;
+}
+
+.banner-container img {
+    display: block !important;
+    width: 100%;
+    height: auto;
+}
+
+.banner-container .image-and-text {
+	position: relative;
+}
+
+.banner-container .image-and-text .slide-text {
+	position: absolute;	
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 700;
+	font-size: 42px;
+	color: #fff;
+}
+
+.banner-container .image-and-text .top_left {
+	top: 2rem;
+	left: 2rem;
+}
+
+.banner-container .image-and-text .top_center {
+	top: 2rem;
+	left: 50%;
+	transform: translate( -50%, 0 );
+}
+
+.banner-container .image-and-text .top_right {
+	top: 2rem;
+	right: 2rem;
+}
+
+.banner-container .image-and-text .middle_left {
+	top: 50%;
+	left: 2rem;
+	transform: translate( 0, -50% );
+}
